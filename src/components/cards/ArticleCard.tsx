@@ -20,7 +20,7 @@ const ArticleCard = ({
     <article className="overflow-hidden rounded-lg bg-white shadow-md">
       <Image
         src={imageUrl}
-        alt="Article image"
+        alt={title}
         className="h-48 w-full object-cover"
         width={200}
         height={200}

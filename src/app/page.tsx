@@ -2,13 +2,93 @@ import ArticleCard from "@/components/cards/ArticleCard";
 import { ArticleCardsContainer } from "@/components/containers/ArticleCardsContainer";
 import SearchArticle from "@/components/forms/SearchArticle";
 import Pagination from "@/components/ui/Pagination";
-import { getArticles } from "@/lib/actions/news.actions";
+import { getGuardianApiArticles } from "@/lib/actions/guardianApi.actions";
+import { getNewYorkTimesApiArticles } from "@/lib/actions/newYorkTimesApi.actions";
+import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
+import { shuffleArray } from "@/lib/helpers";
+
+const mapNewsApiArticles = (data?: {
+  status: string;
+  totalResults: number;
+  articles: NewsAPIArticle[];
+}) =>
+  data?.articles.map(({ title, description, urlToImage, source, url }) => ({
+    title,
+    description,
+    imageUrl: urlToImage,
+    source: source.name,
+    url,
+  })) || [];
+
+const mapGuardianApiArticles = (data?: {
+  response: {
+    status: string;
+    userTier: string;
+    total: number;
+    startIndex: number;
+    pageSize: number;
+    currentPage: number;
+    pages: number;
+    orderBy: string;
+    results: GuardianAPIArticle[];
+  };
+}) =>
+  data?.response.results.map(({ webTitle, webUrl }) => ({
+    title: webTitle,
+    description: "",
+    imageUrl: "",
+    source: "Guardian",
+    url: webUrl,
+  })) || [];
+
+const mapNewYorkTimesArticles = (data?: {
+  docs: NewYorkTimesAPIArticle[];
+  meta: {
+    hits: number;
+    offset: number;
+    time: number;
+  };
+}) =>
+  data?.docs.map(({ web_url, headline, abstract, source }) => ({
+    title: headline.main,
+    description: abstract,
+    imageUrl: "",
+    source,
+    url: web_url,
+  })) || [];
 
 export default async function HomePage({ searchParams }: PageParams) {
   const pagePath = "/";
-  const pageSearchParam = searchParams.page || "1";
+  const currentPage = searchParams.page || "1";
 
-  const articlesData = await getArticles({ page: pageSearchParam });
+  const [
+    newsApiArticlesData,
+    guardianApiArticlesData,
+    newYorkTimesApiArticlesData,
+  ] = await Promise.all([
+    getNewsApiArticles({ page: currentPage }),
+    getGuardianApiArticles({ page: currentPage }),
+    getNewYorkTimesApiArticles({ page: currentPage }),
+  ]);
+
+  const newsApiArticles = mapNewsApiArticles(newsApiArticlesData);
+  const guardianApiArticles = mapGuardianApiArticles(guardianApiArticlesData);
+  const newYorkTimesApiArticles = mapNewYorkTimesArticles(
+    newYorkTimesApiArticlesData
+  );
+
+  const articles = shuffleArray([
+    ...newsApiArticles,
+    ...guardianApiArticles,
+    ...newYorkTimesApiArticles,
+  ]);
+
+  const totalPages =
+    Math.max(
+      newsApiArticlesData?.totalResults || 0,
+      guardianApiArticlesData?.response.pages || 0,
+      newYorkTimesApiArticlesData?.meta.hits || 0
+    ) || 1;
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -17,22 +97,15 @@ export default async function HomePage({ searchParams }: PageParams) {
       </div>
 
       <ArticleCardsContainer>
-        {articlesData?.articles?.map((article, index) => (
-          <ArticleCard
-            key={`article-${index}`}
-            title={article.title}
-            description={article.description}
-            imageUrl={article.urlToImage}
-            source={article.source.name}
-            url={article.url}
-          />
+        {articles?.map((article, index) => (
+          <ArticleCard key={`article-${index}`} {...article} />
         ))}
       </ArticleCardsContainer>
 
       <Pagination
         pagePath={pagePath}
-        currentPage={+pageSearchParam}
-        totalPages={articlesData?.totalResults || 0}
+        currentPage={+currentPage}
+        totalPages={totalPages}
       />
     </main>
   );
