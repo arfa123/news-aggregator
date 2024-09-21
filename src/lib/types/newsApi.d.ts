@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { NewsAPISources } from "@/lib/enums/news.enums";
 
 type NewsAPIArticle = {
-  source: { id: NewsAPISources; name: string };
+  source: { id: string; name: string };
   author?: string;
   title: string;
   description: string;

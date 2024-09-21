@@ -1,16 +1,9 @@
 "use server";
 
-import { newsApiClient } from "@/lib/api";
+import { newsApiClient } from "@/lib/api-clients/newsApiClient";
 import { NewsAPISources } from "@/lib/enums/news.enums";
-import { NewsAPIArticle } from "@/lib/types/news";
 
-export const getArticles = async ({
-  page,
-  sources,
-}: {
-  page: string;
-  sources?: NewsAPISources;
-}) => {
+export const getNewsApiArticles = async ({ page }: { page: string }) => {
   try {
     const response = await newsApiClient.get<{
       status: string;
@@ -19,7 +12,7 @@ export const getArticles = async ({
     }>("/everything", {
       params: {
         page: page || "1",
-        sources: sources || NewsAPISources.BBC_NEWS,
+        sources: `${NewsAPISources.BBC_NEWS}, ${NewsAPISources.ABC_NEWS}, ${NewsAPISources.BLOOMBERG}`,
         pageSize: 10,
       },
     });
