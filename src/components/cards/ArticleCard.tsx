@@ -1,29 +1,43 @@
 import Image from "next/image";
+import Link from "next/link";
 
-const ArticleCard = () => {
+const ArticleCard = ({
+  title,
+  description,
+  imageUrl,
+  category,
+  source,
+  url,
+}: {
+  title: string;
+  description: string;
+  imageUrl: string;
+  category?: string;
+  source: string;
+  url: string;
+}) => {
   return (
     <article className="overflow-hidden rounded-lg bg-white shadow-md">
       <Image
-        src="/placeholder.svg?height=200&width=400"
+        src={imageUrl}
         alt="Article image"
         className="h-48 w-full object-cover"
         width={200}
         height={200}
       />
       <div className="p-4">
-        <span className="text-sm font-semibold text-blue-600">Technology</span>
-        <h4 className="my-2 text-lg font-semibold">
-          Latest Advancements in AI Technology
-        </h4>
-        <p className="mb-4 text-sm text-gray-600">
-          Artificial Intelligence continues to evolve, promising groundbreaking
-          applications across various industries.
-        </p>
+        <span className="text-sm font-semibold text-blue-600">{category}</span>
+        <h4 className="my-2 text-lg font-semibold">{title}</h4>
+        <p className="mb-4 text-sm text-gray-600">{description}</p>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-500">TechNews</span>
-          <a href="#" className="text-sm text-blue-500 hover:underline">
+          <span className="text-sm text-gray-500">{source}</span>
+          <Link
+            href={url || ""}
+            target="_blank"
+            className="text-sm text-blue-500 hover:underline"
+          >
             Read More
-          </a>
+          </Link>
         </div>
       </div>
     </article>
