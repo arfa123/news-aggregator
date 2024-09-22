@@ -4,8 +4,14 @@ import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
 
 export const getNewYorkTimesApiArticles = async ({
   page,
+  keyword,
+  fromDate,
+  toDate,
 }: {
   page: string;
+  keyword?: string;
+  fromDate?: string;
+  toDate?: string;
 }) => {
   try {
     const response = await newYorkTimesApiClient.get<{
@@ -22,6 +28,9 @@ export const getNewYorkTimesApiArticles = async ({
     }>("/articlesearch.json", {
       params: {
         page: page || "1",
+        q: keyword,
+        begin_date: fromDate,
+        end_date: toDate,
       },
     });
 

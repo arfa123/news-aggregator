@@ -2,7 +2,19 @@
 
 import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
 
-export const getGuardianApiArticles = async ({ page }: { page: string }) => {
+export const getGuardianApiArticles = async ({
+  page,
+  keyword,
+  fromDate,
+  toDate,
+  category,
+}: {
+  page: string;
+  keyword?: string;
+  fromDate?: string;
+  toDate?: string;
+  category?: string;
+}) => {
   try {
     const response = await guardianApiClient.get<{
       response: {
@@ -19,6 +31,13 @@ export const getGuardianApiArticles = async ({ page }: { page: string }) => {
     }>("/search", {
       params: {
         page: page || "1",
+        "page-size": 10,
+        format: "json",
+        "show-fields": "headline,thumbnail,short-url,trailText",
+        q: keyword,
+        "form-date": fromDate,
+        "to-date": toDate,
+        section: category,
       },
     });
 
