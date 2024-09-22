@@ -6,25 +6,22 @@ import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
 import { NewsSources } from "@/lib/enums/news.enums";
 import { shuffleArray } from "@/lib/utils";
 
-export const getArticles = async ({
-  page = "1",
-  keyword,
-  fromDate,
-  toDate,
-  newsSource,
-}: {
+export const getArticles = async (searchParams: {
   page?: string;
   keyword?: string;
   fromDate?: string;
   toDate?: string;
   newsSource?: string;
+  category?: string;
 }) => {
+  const { newsSource } = searchParams;
+
   if (!newsSource) {
     const [newsApiArticles, guardianApiArticles, newYorkTimesApiArticles] =
       await Promise.all([
-        getNewsApiArticles({ page, keyword, fromDate, toDate }),
-        getGuardianApiArticles({ page, keyword, fromDate, toDate }),
-        getNewYorkTimesApiArticles({ page, keyword, fromDate, toDate }),
+        getNewsApiArticles(searchParams),
+        getGuardianApiArticles(searchParams),
+        getNewYorkTimesApiArticles(searchParams),
       ]);
 
     const articles = shuffleArray([
@@ -36,7 +33,8 @@ export const getArticles = async ({
     const totalPages =
       Math.max(
         newsApiArticles?.totalPages || 0,
-        guardianApiArticles?.totalPages || 0
+        guardianApiArticles?.totalPages || 0,
+        newYorkTimesApiArticles?.totalPages || 0
       ) || 1;
 
     return {
@@ -47,12 +45,7 @@ export const getArticles = async ({
     switch (newsSource) {
       case NewsSources.NewsAPI:
       default:
-        const newsApiArticles = await getNewsApiArticles({
-          page,
-          keyword,
-          fromDate,
-          toDate,
-        });
+        const newsApiArticles = await getNewsApiArticles(searchParams);
 
         return {
           articles: newsApiArticles?.data || [],
@@ -60,12 +53,7 @@ export const getArticles = async ({
         };
 
       case NewsSources.Guardian:
-        const guardianApiArticles = await getGuardianApiArticles({
-          page,
-          keyword,
-          fromDate,
-          toDate,
-        });
+        const guardianApiArticles = await getGuardianApiArticles(searchParams);
 
         return {
           articles: guardianApiArticles?.data || [],
@@ -73,12 +61,8 @@ export const getArticles = async ({
         };
 
       case NewsSources.NewYorkTimes:
-        const newYorkTimesApiArticles = await getNewYorkTimesApiArticles({
-          page,
-          keyword,
-          fromDate,
-          toDate,
-        });
+        const newYorkTimesApiArticles =
+          await getNewYorkTimesApiArticles(searchParams);
 
         return {
           articles: newYorkTimesApiArticles?.data || [],
