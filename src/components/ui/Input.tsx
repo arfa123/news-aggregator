@@ -1,14 +1,21 @@
 import { InputHTMLAttributes } from "react";
 
+import Label from "@/components/ui/Label";
+
 const Input = ({
+  label,
   className,
   ...props
-}: InputHTMLAttributes<HTMLInputElement>) => {
+}: InputHTMLAttributes<HTMLInputElement> & { label: string }) => {
   return (
-    <input
-      {...props}
-      className={`grow rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
-    />
+    <>
+      <Label htmlFor={props.name}>{label}</Label>
+      <input
+        {...props}
+        id={props.name}
+        className={`w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${className || ""}`}
+      />
+    </>
   );
 };
 

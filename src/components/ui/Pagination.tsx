@@ -1,64 +1,55 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 
-const Pagination = ({
-  currentPage,
-  totalPages,
-  pagePath,
-}: {
-  currentPage: number;
-  totalPages: number;
-  pagePath: string;
-}) => {
-  const createPageUrl = (page: number) => {
-    const searchParams = new URLSearchParams({ page: `${page}` });
-    return `${pagePath}?${searchParams.toString()}`;
+import { generatePagination } from "@/lib/utils";
+
+const Pagination = ({ totalPages }: { totalPages: number }) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
   };
 
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    const maxPagesToShow = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
-    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-    if (endPage - startPage + 1 < maxPagesToShow) {
-      startPage = Math.max(1, endPage - maxPagesToShow + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push({
-        label: `${i}`,
-        value: i,
-        url: createPageUrl(i),
-      });
-    }
-
-    return pageNumbers;
-  };
-
-  const previousPageUrl = createPageUrl(currentPage - 1);
-  const nextPageUrl = createPageUrl(currentPage + 1);
+  const allPages = generatePagination(currentPage, totalPages);
 
   return (
     <div className="mt-8 flex justify-center">
       <nav className="inline-flex rounded-md shadow">
         <Link
-          href={previousPageUrl}
-          className={`rounded-l-md border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 ${currentPage === 1 ? "pointer-events-none" : ""}`}
+          href={createPageURL(currentPage - 1)}
+          className={`rounded-l-md border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 ${currentPage <= 1 ? "pointer-events-none" : ""}`}
         >
           Previous
         </Link>
-        {getPageNumbers().map((pageNumber) => (
-          <Link
-            key={pageNumber.url}
-            href={pageNumber.url}
-            className={`border-y border-gray-300 bg-white px-4 py-2 ${currentPage === pageNumber.value ? "pointer-events-none bg-blue-50 font-medium text-blue-600" : "text-gray-700 hover:bg-gray-50"}`}
-          >
-            {pageNumber.label}
-          </Link>
-        ))}
+        {allPages.map((page, index) => {
+          let position: "first" | "last" | "single" | "middle" | undefined;
+
+          if (index === 0) position = "first";
+          if (index === allPages.length - 1) position = "last";
+          if (allPages.length === 1) position = "single";
+          if (page === "...") position = "middle";
+
+          return (
+            <>
+              <Link
+                key={`${page}-${index}`}
+                href={createPageURL(page)}
+                className={`border-y border-gray-300 bg-white px-4 py-2 ${currentPage === page || position === "middle" ? "pointer-events-none bg-blue-50 font-medium text-blue-600" : "text-gray-700 hover:bg-gray-50"}`}
+              >
+                {page}
+              </Link>
+            </>
+          );
+        })}
         <Link
-          href={nextPageUrl}
-          className={`rounded-r-md border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 ${currentPage === totalPages ? "pointer-events-none" : ""}`}
+          href={createPageURL(currentPage + 1)}
+          className={`rounded-r-md border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 ${currentPage >= totalPages ? "pointer-events-none" : ""}`}
         >
           Next
         </Link>

@@ -41,7 +41,17 @@ export const getGuardianApiArticles = async ({
       },
     });
 
-    return response.data;
+    return {
+      data:
+        response.data?.response.results.map(({ fields }) => ({
+          title: fields.headline,
+          description: fields.trailText,
+          imageUrl: fields.thumbnail,
+          source: "Guardian",
+          url: fields.shortUrl,
+        })) || [],
+      totalPages: response.data.response.pages,
+    };
   } catch (e) {
     console.error(e);
   }
