@@ -9,6 +9,10 @@ export const enum Categories {
   Politics = "politics",
   Technology = "technology",
   Sports = "sports",
+  News = "news",
+  Science = "science",
+  Fashion = "fashion",
+  Environment = "environment",
 }
 
 export const enum SearchArticlesFormFields {

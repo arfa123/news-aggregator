@@ -1,5 +1,9 @@
 import { Categories, NewsSources } from "@/lib/enums/news.enums";
 
+export const PAGE_SIZE = 10;
+
+export const DEFAULT_PAGE = 1;
+
 export const NEWS_SOURCES = [
   {
     label: "All Source",
@@ -35,5 +39,21 @@ export const CATEGORIES = [
   {
     label: "Sports",
     value: Categories.Sports,
+  },
+  {
+    label: "News",
+    value: Categories.News,
+  },
+  {
+    label: "Science",
+    value: Categories.Science,
+  },
+  {
+    label: "Fashion",
+    value: Categories.Fashion,
+  },
+  {
+    label: "Environment",
+    value: Categories.Environment,
   },
 ] as { label: string; value: string }[];

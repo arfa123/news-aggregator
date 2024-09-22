@@ -1,6 +1,10 @@
 "use server";
 
 import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
+import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
+
+const GuardianAPIResponseFormat = "json";
+const GuardianAPIShowFields = "headline,thumbnail,short-url,trailText";
 
 export const getGuardianApiArticles = async ({
   page,
@@ -9,7 +13,7 @@ export const getGuardianApiArticles = async ({
   toDate,
   category,
 }: {
-  page: string;
+  page?: string;
   keyword?: string;
   fromDate?: string;
   toDate?: string;
@@ -30,10 +34,10 @@ export const getGuardianApiArticles = async ({
       };
     }>("/search", {
       params: {
-        page: page || "1",
-        "page-size": 10,
-        format: "json",
-        "show-fields": "headline,thumbnail,short-url,trailText",
+        page: page || DEFAULT_PAGE,
+        "page-size": PAGE_SIZE,
+        format: GuardianAPIResponseFormat,
+        "show-fields": GuardianAPIShowFields,
         q: keyword,
         "form-date": fromDate,
         "to-date": toDate,

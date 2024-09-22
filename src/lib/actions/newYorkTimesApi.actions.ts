@@ -1,6 +1,8 @@
 "use server";
 
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
+import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
+import { capitalize } from "@/lib/utils";
 
 const NEW_YORK_TIMES_IMAGES_BASE_URL =
   process.env.NEW_YORK_TIMES_IMAGES_BASE_URL;
@@ -10,11 +12,13 @@ export const getNewYorkTimesApiArticles = async ({
   keyword,
   fromDate,
   toDate,
+  category,
 }: {
-  page: string;
+  page?: string;
   keyword?: string;
   fromDate?: string;
   toDate?: string;
+  category?: string;
 }) => {
   try {
     const response = await newYorkTimesApiClient.get<{
@@ -30,10 +34,11 @@ export const getNewYorkTimesApiArticles = async ({
       };
     }>("/articlesearch.json", {
       params: {
-        page: page || "1",
+        page: Number(page) - 1 || DEFAULT_PAGE - 1,
         q: keyword,
-        begin_date: fromDate,
-        end_date: toDate,
+        begin_date: fromDate?.replaceAll("-", ""),
+        end_date: toDate?.replaceAll("-", ""),
+        section_name: category ? capitalize(category) : undefined,
       },
     });
 
@@ -48,7 +53,7 @@ export const getNewYorkTimesApiArticles = async ({
             url: web_url,
           })
         ) || [],
-      totalPages: response.data.response.meta.hits,
+      totalPages: Math.ceil(response.data.response.meta.hits / PAGE_SIZE),
     };
   } catch (e) {
     console.error(e);
