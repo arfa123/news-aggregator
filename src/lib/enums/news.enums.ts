@@ -1,7 +1,20 @@
 /* eslint-disable no-unused-vars */
-export const enum NewsAPISources {
-  BBC_NEWS = "bbc-news",
-  NEW_YORK_MAGAZINE = "new-york-magazine",
-  BLOOMBERG = "bloomberg",
-  ABC_NEWS = "abc-news",
+export const enum NewsSources {
+  NewsAPI = "news-api",
+  Guardian = "guardian",
+  NewYorkTimes = "new-york-times",
+}
+
+export const enum Categories {
+  Politics = "politics",
+  Technology = "technology",
+  Sports = "sports",
+}
+
+export const enum SearchArticlesFormFields {
+  keyword = "keyword",
+  fromDate = "from-date",
+  toDate = "to-date",
+  newsSource = "news-source",
+  category = "category",
 }

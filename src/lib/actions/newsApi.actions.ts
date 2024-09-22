@@ -1,7 +1,6 @@
 "use server";
 
 import { newsApiClient } from "@/lib/api-clients/newsApiClient";
-import { NewsAPISources } from "@/lib/enums/news.enums";
 
 export const getNewsApiArticles = async ({
   page,
@@ -22,7 +21,7 @@ export const getNewsApiArticles = async ({
     }>("/everything", {
       params: {
         page: page || "1",
-        sources: `${NewsAPISources.BBC_NEWS}, ${NewsAPISources.ABC_NEWS}, ${NewsAPISources.BLOOMBERG}`,
+        sources: "bbc-news, new-york-magazine, bloomberg, abc-news",
         pageSize: 10,
         q: keyword,
         from: fromDate,
@@ -30,7 +29,19 @@ export const getNewsApiArticles = async ({
       },
     });
 
-    return response.data;
+    return {
+      data:
+        response?.data?.articles.map(
+          ({ title, description, urlToImage, source, url }) => ({
+            title,
+            description,
+            imageUrl: urlToImage,
+            source: source.name,
+            url,
+          })
+        ) || [],
+      totalPages: response.data.totalResults,
+    };
   } catch (e) {
     console.error(e);
   }
