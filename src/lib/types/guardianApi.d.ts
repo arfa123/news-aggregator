@@ -8,6 +8,12 @@ type GuardianAPIArticle = {
   webTitle: string;
   webUrl: string;
   apiUrl: string;
+  fields: {
+    headline: string;
+    trailText: string;
+    shortUrl: string;
+    thumbnail: string;
+  };
   isHosted: boolean;
   pillarId: string;
   pillarName: string;

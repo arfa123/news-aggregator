@@ -7,6 +7,9 @@ import { getNewYorkTimesApiArticles } from "@/lib/actions/newYorkTimesApi.action
 import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
 import { shuffleArray } from "@/lib/helpers";
 
+const NEW_YORK_TIMES_IMAGES_BASE_URL =
+  process.env.NEW_YORK_TIMES_IMAGES_BASE_URL;
+
 const mapNewsApiArticles = (data?: {
   status: string;
   totalResults: number;
@@ -33,12 +36,12 @@ const mapGuardianApiArticles = (data?: {
     results: GuardianAPIArticle[];
   };
 }) =>
-  data?.response.results.map(({ webTitle, webUrl }) => ({
-    title: webTitle,
-    description: "",
-    imageUrl: "",
+  data?.response.results.map(({ fields }) => ({
+    title: fields.headline,
+    description: fields.trailText,
+    imageUrl: fields.thumbnail,
     source: "Guardian",
-    url: webUrl,
+    url: fields.shortUrl,
   })) || [];
 
 const mapNewYorkTimesArticles = (data?: {
@@ -49,10 +52,10 @@ const mapNewYorkTimesArticles = (data?: {
     time: number;
   };
 }) =>
-  data?.docs.map(({ web_url, headline, abstract, source }) => ({
+  data?.docs.map(({ web_url, headline, abstract, source, multimedia }) => ({
     title: headline.main,
     description: abstract,
-    imageUrl: "",
+    imageUrl: `${NEW_YORK_TIMES_IMAGES_BASE_URL}${multimedia?.[0]?.url}`,
     source,
     url: web_url,
   })) || [];
