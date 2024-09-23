@@ -6,12 +6,15 @@ export default function HomeLoader() {
       <div className="mb-8">
         <div className="rounded-lg bg-white p-6 shadow-md">
           <div className="space-y-4 md:flex md:flex-wrap md:items-end md:gap-4 md:space-y-0">
-            {[...Array(6)].map((i) => (
-              <div
-                key={`filter-${i}`}
-                className="h-10 w-full rounded bg-gray-300 md:w-44"
-              ></div>
-            ))}
+            {[...Array(6)]
+              .fill(1)
+              .map((e, i) => e + i * 1)
+              .map((i) => (
+                <div
+                  key={`filter-${i}`}
+                  className="h-10 w-full rounded bg-gray-300 md:w-44"
+                ></div>
+              ))}
           </div>
         </div>
       </div>
