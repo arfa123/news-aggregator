@@ -1,6 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { ROUTES } from "@/lib/constants";
 
 const Header = () => {
+  const pathname = usePathname();
+
   return (
     <header className="bg-white shadow">
       <div className="container mx-auto flex flex-col items-center justify-between px-4 py-6 sm:flex-row">
@@ -9,24 +16,16 @@ const Header = () => {
         </h1>
         <nav>
           <ul className="flex space-x-4">
-            <li>
-              <Link href="/" className="font-semibold text-blue-600">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/feed" className="text-gray-600 hover:text-gray-900">
-                Your Feed
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/settings"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                Settings
-              </Link>
-            </li>
+            {ROUTES.map((route) => (
+              <li key={route.path}>
+                <Link
+                  href={route.path}
+                  className={`${route.path === pathname ? "pointer-events-none font-semibold text-blue-600" : "text-gray-600 hover:text-gray-900"}`}
+                >
+                  {route.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>

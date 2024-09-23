@@ -4,6 +4,21 @@ export const PAGE_SIZE = 10;
 
 export const DEFAULT_PAGE = 1;
 
+export const ROUTES = [
+  {
+    path: "/",
+    label: "Home",
+  },
+  {
+    path: "/feed",
+    label: "My Feed",
+  },
+  {
+    path: "/settings",
+    label: "Setting",
+  },
+];
+
 export const NEWS_SOURCES = [
   {
     label: "All Source",
