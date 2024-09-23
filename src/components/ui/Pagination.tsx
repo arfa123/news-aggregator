@@ -36,15 +36,13 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
           if (page === "...") position = "middle";
 
           return (
-            <>
-              <Link
-                key={`${page}-${index}`}
-                href={createPageURL(page)}
-                className={`border-y border-gray-300 bg-white px-4 py-2 ${currentPage === page || position === "middle" ? "pointer-events-none bg-blue-50 font-medium text-blue-600" : "text-gray-700 hover:bg-gray-50"}`}
-              >
-                {page}
-              </Link>
-            </>
+            <Link
+              key={`${page}-${index}`}
+              href={createPageURL(page)}
+              className={`border-y border-gray-300 bg-white px-4 py-2 ${currentPage === page || position === "middle" ? "pointer-events-none bg-blue-50 font-medium text-blue-600" : "text-gray-700 hover:bg-gray-50"}`}
+            >
+              {page}
+            </Link>
           );
         })}
         <Link
