@@ -39,6 +39,7 @@ export const getGuardianApiArticles = async ({
         format: GuardianAPIResponseFormat,
         "show-fields": GuardianAPIShowFields,
         q: keyword,
+        "query-fields": "body, body,thumbnail",
         "form-date": fromDate,
         "to-date": toDate,
         section: category,

@@ -21,7 +21,8 @@ export const getNewsApiArticles = async ({
   let query = keyword;
 
   if (category) {
-    query += ` AND ${category}`;
+    if (query) query += ` AND ${category}`;
+    else query = category;
   }
 
   try {
