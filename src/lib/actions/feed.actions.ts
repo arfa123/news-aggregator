@@ -6,7 +6,7 @@ import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
 import { NewsSources } from "@/lib/enums";
 import { shuffleArray } from "@/lib/utils";
 
-export const getArticles = async (searchParams: {
+export const getFeedArticles = async (searchParams: {
   page?: string;
   keyword?: string;
   fromDate?: string;

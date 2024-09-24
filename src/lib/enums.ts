@@ -13,6 +13,7 @@ export const enum Categories {
   Science = "science",
   Fashion = "fashion",
   Environment = "environment",
+  Health = "health",
 }
 
 export const enum SearchArticlesFormFields {
@@ -21,4 +22,14 @@ export const enum SearchArticlesFormFields {
   toDate = "to-date",
   newsSource = "news-source",
   category = "category",
+}
+
+export const enum PersonalizedNewsFeedFormFields {
+  preferredNewsSources = "preferred-news-sources",
+  preferredCategories = "preferred-categories",
+  preferredAuthors = "preferred-authors",
+}
+
+export const enum LocalStorageKeys {
+  personalizedNewsFeedPreferences = "personalizedNewsFeedPreferences",
 }

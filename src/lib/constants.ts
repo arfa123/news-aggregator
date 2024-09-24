@@ -1,4 +1,4 @@
-import { Categories, NewsSources } from "@/lib/enums/news.enums";
+import { Categories, NewsSources } from "@/lib/enums";
 
 export const PAGE_SIZE = 10;
 
@@ -15,15 +15,11 @@ export const ROUTES = [
   },
   {
     path: "/settings",
-    label: "Setting",
+    label: "Settings",
   },
 ];
 
-export const NEWS_SOURCES = [
-  {
-    label: "All Source",
-    value: "",
-  },
+export const NEWS_SOURCES_OPTIONS = [
   {
     label: "NewsAPI",
     value: NewsSources.NewsAPI,
@@ -38,11 +34,15 @@ export const NEWS_SOURCES = [
   },
 ] as { label: string; value: string }[];
 
-export const CATEGORIES = [
+export const NEWS_SOURCES = [
   {
-    label: "All Categories",
+    label: "All Source",
     value: "",
   },
+  ...NEWS_SOURCES_OPTIONS,
+] as { label: string; value: string }[];
+
+export const CATEGORIES_OPTIONS = [
   {
     label: "Politics",
     value: Categories.Politics,
@@ -71,4 +71,16 @@ export const CATEGORIES = [
     label: "Environment",
     value: Categories.Environment,
   },
+  {
+    label: "Health",
+    value: Categories.Health,
+  },
+] as { label: string; value: string }[];
+
+export const CATEGORIES = [
+  {
+    label: "All Categories",
+    value: "",
+  },
+  ...CATEGORIES_OPTIONS,
 ] as { label: string; value: string }[];

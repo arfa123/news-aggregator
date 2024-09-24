@@ -4,7 +4,8 @@ import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
 
 const GuardianAPIResponseFormat = "json";
-const GuardianAPIShowFields = "headline,thumbnail,short-url,trailText";
+const GuardianAPIShowFields =
+  "headline,thumbnail,short-url,trailText,lastModified";
 
 export const getGuardianApiArticles = async ({
   page,

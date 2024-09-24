@@ -8,8 +8,8 @@ import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
 import { CATEGORIES, NEWS_SOURCES } from "@/lib/constants";
-import { SearchArticlesFormFields } from "@/lib/enums/news.enums";
-import { SearchArticlesFormSchema } from "@/lib/schemas/article.schemas";
+import { SearchArticlesFormFields } from "@/lib/enums";
+import { SearchArticlesFormSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const SearchArticlesForm = () => {
