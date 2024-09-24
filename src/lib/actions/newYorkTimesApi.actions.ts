@@ -2,7 +2,6 @@
 
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
-import { capitalize } from "@/lib/utils";
 
 const NEW_YORK_TIMES_IMAGES_BASE_URL =
   process.env.NEW_YORK_TIMES_IMAGES_BASE_URL;
@@ -18,7 +17,7 @@ export const getNewYorkTimesApiArticles = async ({
   keyword?: string;
   fromDate?: string;
   toDate?: string;
-  category?: string;
+  category?: string[] | string;
 }) => {
   try {
     const response = await newYorkTimesApiClient.get<{
@@ -38,7 +37,9 @@ export const getNewYorkTimesApiArticles = async ({
         q: keyword,
         begin_date: fromDate?.replaceAll("-", ""),
         end_date: toDate?.replaceAll("-", ""),
-        section_name: category ? capitalize(category) : undefined,
+        fq: category
+          ? `section_name:(${Array.isArray(category) ? category.map((c) => `"${c}"`).join(", ") : category})`
+          : undefined,
       },
     });
 

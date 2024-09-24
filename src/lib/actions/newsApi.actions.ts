@@ -16,13 +16,16 @@ export const getNewsApiArticles = async ({
   keyword?: string;
   fromDate?: string;
   toDate?: string;
-  category?: string;
+  category?: string[] | string;
 }) => {
   let query = keyword;
 
   if (category) {
-    if (query) query += ` AND ${category}`;
-    else query = category;
+    const categories = Array.isArray(category)
+      ? category.join(" OR ")
+      : category;
+    if (query) query += ` OR ${categories}`;
+    else query = categories;
   }
 
   try {

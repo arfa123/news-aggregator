@@ -6,10 +6,10 @@ const Input = ({
   label,
   className,
   ...props
-}: InputHTMLAttributes<HTMLInputElement> & { label: string }) => {
+}: InputHTMLAttributes<HTMLInputElement> & { label?: string }) => {
   return (
     <>
-      <Label htmlFor={props.name}>{label}</Label>
+      {label && <Label htmlFor={props.name}>{label}</Label>}
       <input
         {...props}
         id={props.name}
