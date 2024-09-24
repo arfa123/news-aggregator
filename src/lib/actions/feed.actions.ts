@@ -6,68 +6,67 @@ import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
 import { NewsSources } from "@/lib/enums";
 import { shuffleArray } from "@/lib/utils";
 
+type APIReturnType =
+  | {
+      data: {
+        title: string;
+        description: string;
+        imageUrl: string;
+        source: string;
+        url: string;
+      }[];
+      totalPages: number;
+    }
+  | undefined;
+
 export const getFeedArticles = async (searchParams: {
   page?: string;
-  keyword?: string;
-  fromDate?: string;
-  toDate?: string;
-  newsSource?: string;
-  category?: string;
+  newsSources?: string[];
+  categories?: string[];
+  authors?: string[];
 }) => {
-  const { newsSource } = searchParams;
+  const { newsSources, categories, page } = searchParams;
 
-  if (!newsSource) {
-    const [newsApiArticles, guardianApiArticles, newYorkTimesApiArticles] =
-      await Promise.all([
-        getNewsApiArticles(searchParams),
-        getGuardianApiArticles(searchParams),
-        getNewYorkTimesApiArticles(searchParams),
-      ]);
+  let newsApiArticles: APIReturnType;
+  let guardianApiArticles: APIReturnType;
+  let newYorkTimesApiArticles: APIReturnType;
 
-    const articles = shuffleArray([
-      ...(newsApiArticles?.data || []),
-      ...(guardianApiArticles?.data || []),
-      ...(newYorkTimesApiArticles?.data || []),
-    ]);
-
-    const totalPages =
-      Math.max(
-        newsApiArticles?.totalPages || 0,
-        guardianApiArticles?.totalPages || 0,
-        newYorkTimesApiArticles?.totalPages || 0
-      ) || 1;
-
-    return {
-      articles,
-      totalPages,
-    };
-  } else {
-    switch (newsSource) {
-      case NewsSources.NewsAPI:
-      default:
-        const newsApiArticles = await getNewsApiArticles(searchParams);
-
-        return {
-          articles: newsApiArticles?.data || [],
-          totalPages: newsApiArticles?.totalPages || 1,
-        };
-
-      case NewsSources.Guardian:
-        const guardianApiArticles = await getGuardianApiArticles(searchParams);
-
-        return {
-          articles: guardianApiArticles?.data || [],
-          totalPages: guardianApiArticles?.totalPages || 1,
-        };
-
-      case NewsSources.NewYorkTimes:
-        const newYorkTimesApiArticles =
-          await getNewYorkTimesApiArticles(searchParams);
-
-        return {
-          articles: newYorkTimesApiArticles?.data || [],
-          totalPages: newYorkTimesApiArticles?.totalPages || 1,
-        };
-    }
+  if (newsSources?.includes(NewsSources.NewsAPI)) {
+    newsApiArticles = await getNewsApiArticles({
+      category: categories,
+      page,
+    });
   }
+
+  if (newsSources?.includes(NewsSources.Guardian)) {
+    guardianApiArticles = await getGuardianApiArticles({
+      category: categories?.[0] || "",
+      page,
+    });
+  }
+
+  if (newsSources?.includes(NewsSources.NewYorkTimes)) {
+    newYorkTimesApiArticles = await getNewYorkTimesApiArticles({
+      category: categories,
+      page,
+    });
+  }
+
+  const articles = shuffleArray([
+    ...(newsApiArticles?.data || []),
+    ...(guardianApiArticles?.data || []),
+    ...(newYorkTimesApiArticles?.data || []),
+  ]);
+
+  const totalPages =
+    Math.max(
+      newsApiArticles?.totalPages || 0,
+      guardianApiArticles?.totalPages || 0,
+      newYorkTimesApiArticles?.totalPages || 0
+    ) || 1;
+
+  return {
+    articles,
+    totalPages,
+  };
 };
