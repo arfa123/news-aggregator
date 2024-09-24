@@ -1,6 +1,9 @@
 "use client";
 
+import { useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+
+import { useRouter } from "next/navigation";
 
 import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
@@ -8,16 +11,43 @@ import Input from "@/components/ui/Input";
 import { CATEGORIES_OPTIONS, NEWS_SOURCES_OPTIONS } from "@/lib/constants";
 import { LocalStorageKeys, PersonalizedNewsFeedFormFields } from "@/lib/enums";
 import { PersonalizedNewsFeedFormSchema } from "@/lib/schemas";
+import { PersonalizedNewsFeed } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const PersonalizedNewsFeedForm = () => {
+  const { replace } = useRouter();
+
+  const getFormDefaultValues = useCallback(() => {
+    const personalizedNewsFeedPreferences = localStorage.getItem(
+      LocalStorageKeys.personalizedNewsFeedPreferences
+    );
+    let personalizedNewsFeed: PersonalizedNewsFeed =
+      personalizedNewsFeedPreferences
+        ? JSON.parse(personalizedNewsFeedPreferences)
+        : {
+            [PersonalizedNewsFeedFormFields.preferredNewsSources]: [],
+            [PersonalizedNewsFeedFormFields.preferredCategories]: [],
+            [PersonalizedNewsFeedFormFields.preferredAuthors]: "",
+          };
+
+    return {
+      [PersonalizedNewsFeedFormFields.preferredNewsSources]:
+        personalizedNewsFeed[
+          PersonalizedNewsFeedFormFields.preferredNewsSources
+        ] || [],
+      [PersonalizedNewsFeedFormFields.preferredCategories]:
+        personalizedNewsFeed[
+          PersonalizedNewsFeedFormFields.preferredCategories
+        ] || [],
+      [PersonalizedNewsFeedFormFields.preferredAuthors]:
+        personalizedNewsFeed[PersonalizedNewsFeedFormFields.preferredAuthors] ||
+        "",
+    };
+  }, []);
+
   const personalizedNewsFeedForm = useForm({
     resolver: zodResolver(PersonalizedNewsFeedFormSchema),
-    defaultValues: {
-      [PersonalizedNewsFeedFormFields.preferredNewsSources]: [],
-      [PersonalizedNewsFeedFormFields.preferredCategories]: [],
-      [PersonalizedNewsFeedFormFields.preferredAuthors]: "",
-    },
+    defaultValues: getFormDefaultValues(),
   });
 
   const { register, handleSubmit } = personalizedNewsFeedForm;
@@ -28,6 +58,7 @@ const PersonalizedNewsFeedForm = () => {
         LocalStorageKeys.personalizedNewsFeedPreferences,
         JSON.stringify(formData)
       );
+      replace("/feed");
     },
     (error) => console.error(error)
   );
