@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 
 import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
+import { getErrorMessage } from "@/lib/utils";
 
 const GuardianAPIResponseFormat = "json";
 const GuardianAPIShowFields =
@@ -64,7 +65,10 @@ export const getGuardianApiArticles = async ({
         ) || [],
       totalPages: response.data.response.pages,
     };
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: getErrorMessage(error),
+    };
   }
 };

@@ -4,8 +4,9 @@ import { randomUUID } from "crypto";
 
 import { newsApiClient } from "@/lib/api-clients/newsApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
+import { getErrorMessage } from "@/lib/utils";
 
-const NewsAPISources = "bbc-news, new-york-magazine, bloomberg, abc-news";
+const NewsAPISources = "bbc-news,new-york-magazine,bloomberg,abc-news";
 
 export const getNewsApiArticles = async ({
   page,
@@ -62,7 +63,10 @@ export const getNewsApiArticles = async ({
         ) || [],
       totalPages: response.data.totalResults,
     };
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: getErrorMessage(error),
+    };
   }
 };

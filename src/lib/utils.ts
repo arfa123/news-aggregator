@@ -42,3 +42,19 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 export const capitalize = (word: string) => {
   return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
 };
+
+export const getErrorMessage = (error: unknown): string => {
+  let message: string;
+
+  if (error instanceof Error) {
+    message = error.message;
+  } else if (error && typeof error === "object" && "message" in error) {
+    message = String(error.message);
+  } else if (typeof error === "string") {
+    message = error;
+  } else {
+    message = "Something went wrong";
+  }
+
+  return message;
+};

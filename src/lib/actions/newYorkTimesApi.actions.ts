@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
+import { getErrorMessage } from "@/lib/utils";
 
 const NEW_YORK_TIMES_IMAGES_BASE_URL =
   process.env.NEW_YORK_TIMES_IMAGES_BASE_URL;
@@ -69,7 +70,10 @@ export const getNewYorkTimesApiArticles = async ({
         ) || [],
       totalPages: Math.ceil(response.data.response.meta.hits / PAGE_SIZE),
     };
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    return {
+      error: getErrorMessage(error),
+    };
   }
 };
