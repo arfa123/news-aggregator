@@ -1,7 +1,7 @@
-import Link from "next/link";
-
 import ArticleCard from "@/components/cards/ArticleCard";
-import { ArticleCardsContainer } from "@/components/containers/ArticleCardsContainer";
+import ArticlesErrorCard from "@/components/cards/ArticlesErrorCard";
+import NoArticlesMessageCard from "@/components/cards/NoArticlesMessageCard";
+import ArticleCardsContainer from "@/components/containers/ArticleCardsContainer";
 import Pagination from "@/components/ui/Pagination";
 import { getArticles } from "@/lib/actions/article.actions";
 
@@ -22,16 +22,13 @@ const ArticlesSection = async (searchParams: {
           <ArticleCard key={article.id} {...article} />
         ))}
       </ArticleCardsContainer>
-      {!articles?.length && error ? (
-        <div>
-          {error}{" "}
-          <Link href="/" className="inline-block text-blue-500 hover:underline">
-            Reset
-          </Link>
-        </div>
-      ) : (
-        <p>No Article Found</p>
-      )}
+      {!articles?.length ? (
+        error ? (
+          <ArticlesErrorCard error={error} />
+        ) : (
+          <NoArticlesMessageCard />
+        )
+      ) : null}
       <Pagination totalPages={totalPages} />
     </>
   );

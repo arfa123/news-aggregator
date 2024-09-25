@@ -16,7 +16,7 @@ const ArticleCard = ({
   category,
 }: Article) => {
   return (
-    <article className="overflow-hidden rounded-lg bg-white shadow-md">
+    <article className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md">
       <Image
         src={imageUrl}
         alt={title}
@@ -24,23 +24,31 @@ const ArticleCard = ({
         width={200}
         height={200}
       />
-      <div className="p-4">
-        <span className="text-sm font-semibold text-blue-600">{category}</span>
-        <h4 className="my-2 text-lg font-semibold">{title}</h4>
-        <p className="mb-4 text-sm text-gray-600">{description}</p>
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-500">Source: {source}</span>
-          <span className="text-sm text-gray-500">
-            {dayjs(date).format(DateFormats.MMMMDDYYYY)}
+      <div className="flex flex-1 flex-col justify-between p-4">
+        <div>
+          <span className="text-sm font-semibold text-blue-600">
+            {category}
           </span>
+          <h4 className="my-2 text-lg font-semibold">{title}</h4>
+          <p className="mb-4 line-clamp-4 text-sm text-gray-600">
+            {description}
+          </p>
         </div>
-        <Link
-          href={url || ""}
-          target="_blank"
-          className="mt-4 inline-block text-blue-500 hover:underline"
-        >
-          Read More
-        </Link>
+        <div>
+          <div className="mt-auto flex items-center justify-between">
+            <span className="text-sm text-gray-500">Source: {source}</span>
+            <span className="text-sm text-gray-500">
+              {dayjs(date).format(DateFormats.MMMMDDYYYY)}
+            </span>
+          </div>
+          <Link
+            href={url || ""}
+            target="_blank"
+            className="mt-2 inline-block text-blue-500 hover:underline"
+          >
+            Read More
+          </Link>
+        </div>
       </div>
     </article>
   );
