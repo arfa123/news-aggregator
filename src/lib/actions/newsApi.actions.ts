@@ -1,5 +1,7 @@
 "use server";
 
+import { randomUUID } from "crypto";
+
 import { newsApiClient } from "@/lib/api-clients/newsApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
 
@@ -48,6 +50,7 @@ export const getNewsApiArticles = async ({
       data:
         response?.data?.articles.map(
           ({ title, description, urlToImage, source, url, publishedAt }) => ({
+            id: randomUUID(),
             title,
             description,
             imageUrl: urlToImage,

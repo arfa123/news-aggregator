@@ -1,5 +1,7 @@
 "use server";
 
+import { randomUUID } from "crypto";
+
 import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
 
@@ -50,6 +52,7 @@ export const getGuardianApiArticles = async ({
       data:
         response.data?.response.results.map(
           ({ fields, webPublicationDate, sectionName }) => ({
+            id: randomUUID(),
             title: fields.headline,
             description: fields.trailText,
             imageUrl: fields.thumbnail,

@@ -14,8 +14,8 @@ const PersonalizedArticlesSection = async (searchParams: {
   return (
     <>
       <ArticleCardsContainer>
-        {articles?.map((article, index) => (
-          <ArticleCard key={`article-${index}`} {...article} />
+        {articles?.map((article) => (
+          <ArticleCard key={article.id} {...article} />
         ))}
       </ArticleCardsContainer>
       <Pagination totalPages={totalPages} />
