@@ -1,0 +1,11 @@
+services:
+  news-aggregator:
+    container_name: news-aggregator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: news-aggregator:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
