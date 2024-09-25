@@ -15,13 +15,29 @@ export const getNewYorkTimesApiArticles = async ({
   fromDate,
   toDate,
   category,
+  authors,
 }: {
   page?: string;
   keyword?: string;
   fromDate?: string;
   toDate?: string;
   category?: string[] | string;
+  authors?: string[];
 }) => {
+  const fq: string[] = [];
+
+  if (category) {
+    fq.push(
+      `section_name:(${Array.isArray(category) ? category.map((c) => `"${c}"`).join(", ") : category})`
+    );
+  }
+
+  if (authors) {
+    fq.push(
+      `persons:(${Array.isArray(authors) ? authors.map((c) => `"${c}"`).join(", ") : authors})`
+    );
+  }
+
   try {
     const response = await newYorkTimesApiClient.get<{
       status: string;
@@ -40,9 +56,7 @@ export const getNewYorkTimesApiArticles = async ({
         q: keyword,
         begin_date: fromDate?.replaceAll("-", ""),
         end_date: toDate?.replaceAll("-", ""),
-        fq: category
-          ? `section_name:(${Array.isArray(category) ? category.map((c) => `"${c}"`).join(", ") : category})`
-          : undefined,
+        fq: fq.length > 0 ? fq.join(" OR ") : undefined,
       },
     });
 

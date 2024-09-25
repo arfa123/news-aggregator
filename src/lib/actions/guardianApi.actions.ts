@@ -16,13 +16,23 @@ export const getGuardianApiArticles = async ({
   fromDate,
   toDate,
   category,
+  authors,
 }: {
   page?: string;
   keyword?: string;
   fromDate?: string;
   toDate?: string;
   category?: string;
+  authors?: string[];
 }) => {
+  let query = keyword;
+
+  if (authors) {
+    const author = authors.join(" OR ");
+    if (query) query += ` OR ${author}`;
+    else query = author;
+  }
+
   try {
     const response = await guardianApiClient.get<{
       response: {
@@ -42,7 +52,7 @@ export const getGuardianApiArticles = async ({
         "page-size": PAGE_SIZE,
         format: GuardianAPIResponseFormat,
         "show-fields": GuardianAPIShowFields,
-        q: keyword,
+        q: query,
         "form-date": fromDate,
         "to-date": toDate,
         section: category,

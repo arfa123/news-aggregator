@@ -18,7 +18,8 @@ type Article = {
 
 type ArticleAPIResponse =
   | {
-      data: Article[];
-      totalPages: number;
+      data?: Article[];
+      totalPages?: number;
+      error?: string;
     }
   | undefined;
