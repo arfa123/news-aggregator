@@ -6,6 +6,7 @@ import { PersonalizedNewsFeedFormSchema } from "@/lib/schemas";
 type PersonalizedNewsFeed = z.infer<typeof PersonalizedNewsFeedFormSchema>;
 
 type Article = {
+  id: string;
   title: string;
   description: string;
   imageUrl: string;

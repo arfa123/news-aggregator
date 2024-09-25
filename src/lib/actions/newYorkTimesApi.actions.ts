@@ -1,5 +1,7 @@
 "use server";
 
+import { randomUUID } from "crypto";
+
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
 
@@ -55,6 +57,7 @@ export const getNewYorkTimesApiArticles = async ({
             pub_date,
             section_name,
           }) => ({
+            id: randomUUID(),
             title: headline.main,
             description: abstract,
             imageUrl: `${NEW_YORK_TIMES_IMAGES_BASE_URL}${multimedia?.[0]?.url}`,
