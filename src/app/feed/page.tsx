@@ -27,7 +27,9 @@ export default function FeedPage({
 
   const newsSources = searchParams ? searchParams.newsSource?.split(",") : [];
   const categories = searchParams ? searchParams.category?.split(",") : [];
-  const authors = searchParams ? searchParams.authors?.split(",") : [];
+  const authors = searchParams
+    ? searchParams.authors?.split(",").map((author) => author.trim())
+    : [];
 
   return (
     <main className="container mx-auto px-4 py-8">

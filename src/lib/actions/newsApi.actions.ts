@@ -14,12 +14,14 @@ export const getNewsApiArticles = async ({
   fromDate,
   toDate,
   category,
+  authors,
 }: {
   page?: string;
   keyword?: string;
   fromDate?: string;
   toDate?: string;
   category?: string[] | string;
+  authors?: string[];
 }) => {
   let query = keyword;
 
@@ -29,6 +31,12 @@ export const getNewsApiArticles = async ({
       : category;
     if (query) query += ` OR ${categories}`;
     else query = categories;
+  }
+
+  if (authors) {
+    const author = authors.join(" OR ");
+    if (query) query += ` OR ${author}`;
+    else query = author;
   }
 
   try {
