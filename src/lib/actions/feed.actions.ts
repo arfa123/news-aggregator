@@ -4,20 +4,8 @@ import { getGuardianApiArticles } from "@/lib/actions/guardianApi.actions";
 import { getNewYorkTimesApiArticles } from "@/lib/actions/newYorkTimesApi.actions";
 import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
 import { NewsSources } from "@/lib/enums";
+import { ArticleAPIResponse } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
-
-type APIReturnType =
-  | {
-      data: {
-        title: string;
-        description: string;
-        imageUrl: string;
-        source: string;
-        url: string;
-      }[];
-      totalPages: number;
-    }
-  | undefined;
 
 export const getFeedArticles = async (searchParams: {
   page?: string;
@@ -27,9 +15,9 @@ export const getFeedArticles = async (searchParams: {
 }) => {
   const { newsSources, categories, page } = searchParams;
 
-  let newsApiArticles: APIReturnType;
-  let guardianApiArticles: APIReturnType;
-  let newYorkTimesApiArticles: APIReturnType;
+  let newsApiArticles: ArticleAPIResponse;
+  let guardianApiArticles: ArticleAPIResponse;
+  let newYorkTimesApiArticles: ArticleAPIResponse;
 
   if (newsSources?.includes(NewsSources.NewsAPI)) {
     newsApiArticles = await getNewsApiArticles({

@@ -47,12 +47,14 @@ export const getNewsApiArticles = async ({
     return {
       data:
         response?.data?.articles.map(
-          ({ title, description, urlToImage, source, url }) => ({
+          ({ title, description, urlToImage, source, url, publishedAt }) => ({
             title,
             description,
             imageUrl: urlToImage,
             source: source.name,
             url,
+            date: publishedAt,
+            category: "",
           })
         ) || [],
       totalPages: response.data.totalResults,

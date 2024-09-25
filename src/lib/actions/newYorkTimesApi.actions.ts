@@ -46,12 +46,22 @@ export const getNewYorkTimesApiArticles = async ({
     return {
       data:
         response?.data?.response?.docs.map(
-          ({ web_url, headline, abstract, source, multimedia }) => ({
+          ({
+            web_url,
+            headline,
+            abstract,
+            source,
+            multimedia,
+            pub_date,
+            section_name,
+          }) => ({
             title: headline.main,
             description: abstract,
             imageUrl: `${NEW_YORK_TIMES_IMAGES_BASE_URL}${multimedia?.[0]?.url}`,
             source,
             url: web_url,
+            date: pub_date,
+            category: section_name,
           })
         ) || [],
       totalPages: Math.ceil(response.data.response.meta.hits / PAGE_SIZE),
