@@ -1,11 +1,25 @@
 "use server";
 
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 import { getGuardianApiArticles } from "@/lib/actions/guardianApi.actions";
 import { getNewYorkTimesApiArticles } from "@/lib/actions/newYorkTimesApi.actions";
 import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
-import { NewsSources } from "@/lib/enums";
+import { CookiesKeys, NewsSources } from "@/lib/enums";
 import { ArticleAPIResponse } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
+
+export const setPersonalizedFeedPrefrences = async (
+  personalizedNewsFeed: string
+) => {
+  cookies().set(
+    CookiesKeys.personalizedNewsFeedPreferences,
+    personalizedNewsFeed,
+    { httpOnly: true, path: "/" }
+  );
+  redirect("/feed");
+};
 
 export const getFeedArticles = async (searchParams: {
   page?: string;
