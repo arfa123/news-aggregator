@@ -40,7 +40,6 @@ export const getGuardianApiArticles = async ({
         format: GuardianAPIResponseFormat,
         "show-fields": GuardianAPIShowFields,
         q: keyword,
-        "query-fields": "body, body,thumbnail",
         "form-date": fromDate,
         "to-date": toDate,
         section: category,
@@ -49,13 +48,17 @@ export const getGuardianApiArticles = async ({
 
     return {
       data:
-        response.data?.response.results.map(({ fields }) => ({
-          title: fields.headline,
-          description: fields.trailText,
-          imageUrl: fields.thumbnail,
-          source: "Guardian",
-          url: fields.shortUrl,
-        })) || [],
+        response.data?.response.results.map(
+          ({ fields, webPublicationDate, sectionName }) => ({
+            title: fields.headline,
+            description: fields.trailText,
+            imageUrl: fields.thumbnail,
+            source: "Guardian",
+            url: fields.shortUrl,
+            date: webPublicationDate,
+            category: sectionName,
+          })
+        ) || [],
       totalPages: response.data.response.pages,
     };
   } catch (e) {

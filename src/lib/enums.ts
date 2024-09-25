@@ -33,3 +33,7 @@ export const enum PersonalizedNewsFeedFormFields {
 export const enum LocalStorageKeys {
   personalizedNewsFeedPreferences = "personalizedNewsFeedPreferences",
 }
+
+export const enum DateFormats {
+  MMMMDDYYYY = "MMMM DD, YYYY",
+}
