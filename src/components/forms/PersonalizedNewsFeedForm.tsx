@@ -3,47 +3,36 @@
 import { useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { useRouter } from "next/navigation";
-
 import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
+import { setPersonalizedFeedPrefrences } from "@/lib/actions/feed.actions";
 import { CATEGORIES_OPTIONS, NEWS_SOURCES_OPTIONS } from "@/lib/constants";
-import { LocalStorageKeys, PersonalizedNewsFeedFormFields } from "@/lib/enums";
+import { PersonalizedNewsFeedFormFields } from "@/lib/enums";
 import { PersonalizedNewsFeedFormSchema } from "@/lib/schemas";
-import { PersonalizedNewsFeed } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const PersonalizedNewsFeedForm = () => {
-  const { replace } = useRouter();
-
+const PersonalizedNewsFeedForm = ({
+  personalizedNewsFeedPreferences,
+}: {
+  personalizedNewsFeedPreferences?: string;
+}) => {
   const getFormDefaultValues = useCallback(() => {
-    const personalizedNewsFeedPreferences = localStorage.getItem(
-      LocalStorageKeys.personalizedNewsFeedPreferences
-    );
-    let personalizedNewsFeed: PersonalizedNewsFeed =
-      personalizedNewsFeedPreferences
-        ? JSON.parse(personalizedNewsFeedPreferences)
-        : {
-            [PersonalizedNewsFeedFormFields.preferredNewsSources]: [],
-            [PersonalizedNewsFeedFormFields.preferredCategories]: [],
-            [PersonalizedNewsFeedFormFields.preferredAuthors]: "",
-          };
+    const params = new URLSearchParams(personalizedNewsFeedPreferences || "");
+
+    const preferredNewsSources = params.get("newsSource");
+    const preferredCategories = params.get("category");
+    const preferredAuthors = params.get("authors");
 
     return {
       [PersonalizedNewsFeedFormFields.preferredNewsSources]:
-        personalizedNewsFeed[
-          PersonalizedNewsFeedFormFields.preferredNewsSources
-        ] || [],
-      [PersonalizedNewsFeedFormFields.preferredCategories]:
-        personalizedNewsFeed[
-          PersonalizedNewsFeedFormFields.preferredCategories
-        ] || [],
-      [PersonalizedNewsFeedFormFields.preferredAuthors]:
-        personalizedNewsFeed[PersonalizedNewsFeedFormFields.preferredAuthors] ||
-        "",
+        preferredNewsSources ? preferredNewsSources.split(",") : [],
+      [PersonalizedNewsFeedFormFields.preferredCategories]: preferredCategories
+        ? preferredCategories.split(",")
+        : [],
+      [PersonalizedNewsFeedFormFields.preferredAuthors]: preferredAuthors || "",
     };
-  }, []);
+  }, [personalizedNewsFeedPreferences]);
 
   const personalizedNewsFeedForm = useForm({
     resolver: zodResolver(PersonalizedNewsFeedFormSchema),
@@ -54,11 +43,28 @@ const PersonalizedNewsFeedForm = () => {
 
   const onSubmit = handleSubmit(
     (formData) => {
-      localStorage.setItem(
-        LocalStorageKeys.personalizedNewsFeedPreferences,
-        JSON.stringify(formData)
-      );
-      replace("/feed");
+      const params = new URLSearchParams("");
+
+      const preferredNewsSources =
+        formData[PersonalizedNewsFeedFormFields.preferredNewsSources];
+      const preferredCategories =
+        formData[PersonalizedNewsFeedFormFields.preferredCategories];
+      const preferredAuthors =
+        formData[PersonalizedNewsFeedFormFields.preferredAuthors];
+
+      if (preferredNewsSources?.length > 0) {
+        params.set("newsSource", preferredNewsSources.join(","));
+      }
+
+      if (preferredCategories?.length > 0) {
+        params.set("category", preferredCategories.join(","));
+      }
+
+      if (preferredCategories?.length > 0) {
+        params.set("authors", preferredAuthors);
+      }
+
+      setPersonalizedFeedPrefrences(params.toString());
     },
     (error) => console.error(error)
   );

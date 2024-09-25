@@ -30,8 +30,8 @@ export const enum PersonalizedNewsFeedFormFields {
   preferredAuthors = "preferred-authors",
 }
 
-export const enum LocalStorageKeys {
-  personalizedNewsFeedPreferences = "personalizedNewsFeedPreferences",
+export const enum CookiesKeys {
+  personalizedNewsFeedPreferences = "personalized-news-feed-preferences",
 }
 
 export const enum DateFormats {
