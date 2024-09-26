@@ -19,3 +19,7 @@ body {
   background: var(--background);
   font-synthesis: none;
 }
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.75);
+}

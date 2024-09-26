@@ -22,10 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-gray-100">
         <ArticleProvider>
-          {modal}
           <Header />
           {children}
           <Footer />
+          {modal}
         </ArticleProvider>
       </body>
     </html>
