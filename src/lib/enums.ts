@@ -37,3 +37,7 @@ export const enum CookiesKeys {
 export const enum DateFormats {
   MMMMDDYYYY = "MMMM DD, YYYY",
 }
+
+export const enum LocalStorageKeys {
+  selectedArticle = "selected-article",
+}

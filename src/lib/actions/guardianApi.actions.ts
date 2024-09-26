@@ -8,7 +8,7 @@ import { getErrorMessage } from "@/lib/utils";
 
 const GuardianAPIResponseFormat = "json";
 const GuardianAPIShowFields =
-  "headline,thumbnail,short-url,trailText,publication";
+  "headline,thumbnail,short-url,trailText,publication,body,byline";
 
 export const getGuardianApiArticles = async ({
   page,
@@ -71,6 +71,8 @@ export const getGuardianApiArticles = async ({
             url: fields.shortUrl,
             date: webPublicationDate,
             category: sectionName,
+            content: fields.body,
+            author: fields.byline,
           })
         ) || [],
       totalPages: response.data.response.pages,
