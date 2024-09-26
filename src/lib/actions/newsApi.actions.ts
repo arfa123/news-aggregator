@@ -58,7 +58,16 @@ export const getNewsApiArticles = async ({
     return {
       data:
         response?.data?.articles.map(
-          ({ title, description, urlToImage, source, url, publishedAt }) => ({
+          ({
+            title,
+            description,
+            urlToImage,
+            source,
+            url,
+            publishedAt,
+            content,
+            author,
+          }) => ({
             id: randomUUID(),
             title,
             description,
@@ -67,6 +76,8 @@ export const getNewsApiArticles = async ({
             url,
             date: publishedAt,
             category: "",
+            content,
+            author,
           })
         ) || [],
       totalPages: response.data.totalResults,

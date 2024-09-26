@@ -14,6 +14,8 @@ type GuardianAPIArticle = {
     shortUrl: string;
     thumbnail: string;
     publication: string;
+    body: string;
+    byline: string;
   };
   isHosted: boolean;
   pillarId: string;

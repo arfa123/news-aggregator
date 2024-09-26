@@ -71,6 +71,8 @@ export const getNewYorkTimesApiArticles = async ({
             multimedia,
             pub_date,
             section_name,
+            snippet,
+            byline,
           }) => ({
             id: randomUUID(),
             title: headline.main,
@@ -80,6 +82,8 @@ export const getNewYorkTimesApiArticles = async ({
             url: web_url,
             date: pub_date,
             category: section_name,
+            content: snippet,
+            author: byline.original,
           })
         ) || [],
       totalPages: Math.ceil(response.data.response.meta.hits / PAGE_SIZE),

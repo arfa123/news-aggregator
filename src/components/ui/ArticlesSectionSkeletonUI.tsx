@@ -8,18 +8,24 @@ const ArticlesSectionSkeletonUI = () => {
           .map((i) => (
             <article
               key={`article-${i}`}
-              className="overflow-hidden rounded-lg bg-white shadow-md"
+              className="flex animate-pulse flex-col overflow-hidden rounded-lg bg-white shadow-md"
             >
-              <div className="h-48 w-full bg-gray-300"></div>
-              <div className="p-4">
-                <div className="mb-2 h-4 w-1/4 rounded bg-gray-300"></div>
-                <div className="mb-2 h-6 w-3/4 rounded bg-gray-300"></div>
-                <div className="mb-4 h-4 w-full rounded bg-gray-300"></div>
-                <div className="flex items-center justify-between">
-                  <div className="h-4 w-1/4 rounded bg-gray-300"></div>
-                  <div className="h-4 w-1/4 rounded bg-gray-300"></div>
+              <div className="h-48 w-full bg-gray-300" />
+              <div className="flex grow flex-col p-6">
+                <div className="mb-2 h-6 w-3/4 rounded bg-gray-300" />
+                <div className="mb-2 h-4 w-full rounded bg-gray-300" />
+                <div className="mb-2 h-4 w-full rounded bg-gray-300" />
+                <div className="mb-4 h-4 w-2/3 rounded bg-gray-300" />
+                <div className="mt-auto space-y-2">
+                  {[...Array(4)].map((_, index) => (
+                    <div key={index} className="flex items-center">
+                      <div className="mr-2 size-4 rounded-full bg-gray-300" />
+                      <div className="h-4 w-1/2 rounded bg-gray-300" />
+                    </div>
+                  ))}
                 </div>
               </div>
+              <div className="h-10 bg-gray-300" />
             </article>
           ))}
       </div>

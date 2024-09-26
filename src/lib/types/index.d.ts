@@ -14,6 +14,8 @@ type Article = {
   url: string;
   date: string;
   category: string;
+  content: string;
+  author: string;
 };
 
 type ArticleAPIResponse =

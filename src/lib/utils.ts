@@ -58,3 +58,12 @@ export const getErrorMessage = (error: unknown): string => {
 
   return message;
 };
+
+export function isHTML(str: string): boolean {
+  try {
+    const doc = new DOMParser().parseFromString(str, "text/html");
+    return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
+  } catch (error) {
+    return false;
+  }
+}
