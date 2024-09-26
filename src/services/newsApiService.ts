@@ -2,8 +2,8 @@
 
 import { randomUUID } from "crypto";
 
+import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
 import { newsApiClient } from "@/lib/api-clients/newsApiClient";
-import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
 import { getErrorMessage } from "@/lib/utils";
 
 const NewsAPISources = "bbc-news,new-york-magazine,bloomberg,abc-news";

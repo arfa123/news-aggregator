@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import Footer from "@/components/ui/Footer";
-import Header from "@/components/ui/Header";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import { ArticleProvider } from "@/contexts/ArticleContext";
 
 import "./globals.css";
@@ -22,10 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-gray-100">
         <ArticleProvider>
+          {modal}
           <Header />
           {children}
           <Footer />
-          {modal}
         </ArticleProvider>
       </body>
     </html>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { ROUTES } from "@/lib/constants";
+import { ROUTES } from "@/config/constants";
 
 const Header = () => {
   const pathname = usePathname();

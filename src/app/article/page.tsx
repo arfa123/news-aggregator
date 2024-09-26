@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import ArticleDetails from "@/components/cards/ArticleDetails";
-import { useArticle } from "@/contexts/ArticleContext";
+import ArticleDetails from "@/components/articles/ArticleDetails";
+import useArticle from "@/hooks/useArticle";
 
 export default function ArticlePage() {
   const { selectedArticle } = useArticle();

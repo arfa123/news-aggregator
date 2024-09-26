@@ -1,10 +1,10 @@
 "use server";
 
-import { getGuardianApiArticles } from "@/lib/actions/guardianApi.actions";
-import { getNewYorkTimesApiArticles } from "@/lib/actions/newYorkTimesApi.actions";
-import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
-import { NewsSources } from "@/lib/enums";
 import { shuffleArray } from "@/lib/utils";
+import { getGuardianApiArticles } from "@/services/guardianApiService";
+import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
+import { getNewsApiArticles } from "@/services/newsApiService";
+import { NewsSources } from "@/types/enums";
 
 export const getArticles = async (searchParams: {
   page?: string;

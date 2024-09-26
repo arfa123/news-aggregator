@@ -1,9 +1,9 @@
-import ArticleCard from "@/components/cards/ArticleCard";
-import ArticlesErrorCard from "@/components/cards/ArticlesErrorCard";
-import NoArticlesMessageCard from "@/components/cards/NoArticlesMessageCard";
-import ArticleCardsContainer from "@/components/containers/ArticleCardsContainer";
+import ArticleCard from "@/components/articles/ArticleCard";
+import ArticlesErrorCard from "@/components/articles/ArticlesErrorCard";
+import NoArticlesMessageCard from "@/components/articles/NoArticlesMessageCard";
+import ArticleCardsContainer from "@/components/sections/ArticleCardsContainer";
 import Pagination from "@/components/ui/Pagination";
-import { getArticles } from "@/lib/actions/article.actions";
+import { getArticles } from "@/services/articleService";
 
 const ArticlesSection = async (searchParams: {
   page?: string;

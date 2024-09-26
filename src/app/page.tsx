@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import ArticlesSection from "@/components/containers/ArticlesSection";
 import SearchArticlesForm from "@/components/forms/SearchArticlesForm";
+import ArticlesSection from "@/components/sections/ArticlesSection";
 import ArticlesSectionSkeletonUI from "@/components/ui/ArticlesSectionSkeletonUI";
 
 export default async function HomePage({

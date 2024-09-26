@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { ApiError } from "@/lib/types/api";
+import { ApiError } from "@/types/api";
 
 const NEW_YORK_TIMES_API_KEY = process.env.NEW_YORK_TIMES_API_KEY;
 const NEW_YORK_TIMES_API_BASE_URL = process.env.NEW_YORK_TIMES_API_BASE_URL;
