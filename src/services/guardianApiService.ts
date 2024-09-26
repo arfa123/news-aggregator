@@ -2,8 +2,8 @@
 
 import { randomUUID } from "crypto";
 
+import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
 import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
-import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
 import { getErrorMessage } from "@/lib/utils";
 
 const GuardianAPIResponseFormat = "json";

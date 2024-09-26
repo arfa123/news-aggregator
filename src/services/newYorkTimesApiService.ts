@@ -2,8 +2,8 @@
 
 import { randomUUID } from "crypto";
 
+import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
-import { DEFAULT_PAGE, PAGE_SIZE } from "@/lib/constants";
 import { getErrorMessage } from "@/lib/utils";
 
 const NEW_YORK_TIMES_IMAGES_BASE_URL =

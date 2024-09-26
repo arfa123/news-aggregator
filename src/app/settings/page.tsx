@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import PersonalizedNewsFeedForm from "@/components/forms/PersonalizedNewsFeedForm";
-import { CookiesKeys } from "@/lib/enums";
+import { CookiesKeys } from "@/types/enums";
 
 export default function SettingsPage() {
   const personalizedNewsFeedPreferences = cookies().get(

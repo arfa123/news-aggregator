@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   PersonalizedNewsFeedFormFields,
   SearchArticlesFormFields,
-} from "@/lib/enums";
+} from "@/types/enums";
 
 export const SearchArticlesFormSchema = z.object({
   [SearchArticlesFormFields.keyword]: z.string().optional(),

@@ -1,4 +1,4 @@
-import { Categories, NewsSources } from "@/lib/enums";
+import { Categories, NewsSources } from "@/types/enums";
 
 export const PAGE_SIZE = 10;
 

@@ -2,10 +2,10 @@ import { Suspense } from "react";
 
 import { cookies } from "next/headers";
 
-import PersonalizedArticlesSection from "@/components/containers/PersonalizedArticlesSection";
 import SearchPersonalizedNewsFeedForm from "@/components/forms/SearchPersonalizedNewsFeedForm";
+import PersonalizedArticlesSection from "@/components/sections/PersonalizedArticlesSection";
 import ArticlesSectionSkeletonUI from "@/components/ui/ArticlesSectionSkeletonUI";
-import { CookiesKeys } from "@/lib/enums";
+import { CookiesKeys } from "@/types/enums";
 
 export default function FeedPage({
   searchParams,

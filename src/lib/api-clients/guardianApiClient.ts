@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { ApiError } from "@/lib/types/api";
+import { ApiError } from "@/types/api";
 
 const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
 const GUARDIAN_API_BASE_URL = process.env.GUARDIAN_API_BASE_URL;

@@ -7,9 +7,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
-import { CATEGORIES, NEWS_SOURCES } from "@/lib/constants";
-import { SearchArticlesFormFields } from "@/lib/enums";
+import { CATEGORIES, NEWS_SOURCES } from "@/config/constants";
 import { SearchArticlesFormSchema } from "@/lib/schemas";
+import { SearchArticlesFormFields } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const SearchArticlesForm = () => {

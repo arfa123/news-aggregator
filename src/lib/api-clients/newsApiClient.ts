@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { ApiError } from "@/lib/types/api";
+import { ApiError } from "@/types/api";
 
 const NEWS_API_KEY = process.env.NEWS_API_KEY;
 const NEWS_API_BASE_URL = process.env.NEWS_API_BASE_URL;

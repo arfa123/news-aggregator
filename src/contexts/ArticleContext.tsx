@@ -1,9 +1,9 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
-import { LocalStorageKeys } from "@/lib/enums";
-import { Article } from "@/lib/types";
+import { Article } from "@/types";
+import { LocalStorageKeys } from "@/types/enums";
 
 interface ArticleContextType {
   selectedArticle: Article | null;
@@ -11,7 +11,9 @@ interface ArticleContextType {
   setSelectedArticle: (article: Article | null) => void;
 }
 
-const ArticleContext = createContext<ArticleContextType | undefined>(undefined);
+export const ArticleContext = createContext<ArticleContextType | undefined>(
+  undefined
+);
 
 export function ArticleProvider({ children }: { children: React.ReactNode }) {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
@@ -41,12 +43,4 @@ export function ArticleProvider({ children }: { children: React.ReactNode }) {
       {children}
     </ArticleContext.Provider>
   );
-}
-
-export function useArticle() {
-  const context = useContext(ArticleContext);
-  if (context === undefined) {
-    throw new Error("useArticle must be used within an ArticleProvider");
-  }
-  return context;
 }

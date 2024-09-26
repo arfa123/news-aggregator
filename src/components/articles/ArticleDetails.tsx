@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 
-import { DateFormats } from "@/lib/enums";
-import { Article } from "@/lib/types";
 import { isHTML } from "@/lib/utils";
+import { Article } from "@/types";
+import { DateFormats } from "@/types/enums";
 import {
   CalendarIcon,
   NewspaperIcon,

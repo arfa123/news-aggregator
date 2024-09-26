@@ -6,10 +6,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
-import { setPersonalizedFeedPrefrences } from "@/lib/actions/feed.actions";
-import { CATEGORIES_OPTIONS, NEWS_SOURCES_OPTIONS } from "@/lib/constants";
-import { PersonalizedNewsFeedFormFields } from "@/lib/enums";
+import { CATEGORIES_OPTIONS, NEWS_SOURCES_OPTIONS } from "@/config/constants";
 import { PersonalizedNewsFeedFormSchema } from "@/lib/schemas";
+import { setPersonalizedFeedPrefrences } from "@/services/feedService";
+import { PersonalizedNewsFeedFormFields } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const PersonalizedNewsFeedForm = ({

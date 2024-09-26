@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 
 import { useRouter } from "next/navigation";
 
-import ArticleDetails from "@/components/cards/ArticleDetails";
-import { useArticle } from "@/contexts/ArticleContext";
+import ArticleDetails from "@/components/articles/ArticleDetails";
+import useArticle from "@/hooks/useArticle";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function ArticleModal() {

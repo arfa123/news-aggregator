@@ -3,12 +3,12 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { getGuardianApiArticles } from "@/lib/actions/guardianApi.actions";
-import { getNewYorkTimesApiArticles } from "@/lib/actions/newYorkTimesApi.actions";
-import { getNewsApiArticles } from "@/lib/actions/newsApi.actions";
-import { CookiesKeys, NewsSources } from "@/lib/enums";
-import { ArticleAPIResponse } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
+import { getGuardianApiArticles } from "@/services/guardianApiService";
+import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
+import { getNewsApiArticles } from "@/services/newsApiService";
+import { ArticleAPIResponse } from "@/types";
+import { CookiesKeys, NewsSources } from "@/types/enums";
 
 export const setPersonalizedFeedPrefrences = async (
   personalizedNewsFeed: string
