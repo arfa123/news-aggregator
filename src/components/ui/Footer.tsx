@@ -37,7 +37,7 @@ const Footer = () => {
           </nav>
         </div>
         <div className="mt-8 text-center text-sm text-gray-400">
-          &copy; 2023 News Aggregator. All rights reserved.
+          &copy; 2024 News Aggregator. All rights reserved.
         </div>
       </div>
     </footer>
