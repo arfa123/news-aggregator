@@ -60,7 +60,7 @@ const PersonalizedNewsFeedForm = ({
         params.set("category", preferredCategories.join(","));
       }
 
-      if (preferredCategories?.length > 0) {
+      if (preferredAuthors) {
         params.set("authors", preferredAuthors);
       }
 
