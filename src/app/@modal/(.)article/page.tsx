@@ -28,12 +28,9 @@ export default function ArticleModal() {
   if (!selectedArticle) return null;
 
   return (
-    <dialog
-      ref={dialogRef}
-      className="fixed inset-0 z-50 m-0 max-h-full max-w-full overflow-hidden p-0"
-    >
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <div className="relative z-10 max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
+    <dialog ref={dialogRef}>
+      <div className="fixed inset-0 flex overflow-y-auto p-4">
+        <div className="relative z-10 m-auto w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl">
           <div className="mb-4 flex items-start justify-between">
             <span />
             <button
