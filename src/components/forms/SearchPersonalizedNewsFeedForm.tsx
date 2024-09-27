@@ -4,6 +4,9 @@ import { useEffect } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { DEFAULT_PAGE } from "@/config/constants";
+import { PageSearchParams, Paths } from "@/types/enums";
+
 const SearchPersonalizedNewsFeedForm = ({
   personalizedNewsFeedPreferences,
 }: {
@@ -16,18 +19,18 @@ const SearchPersonalizedNewsFeedForm = ({
   useEffect(() => {
     if (personalizedNewsFeedPreferences) {
       if (
-        !searchParams.has("newsSource") &&
-        !searchParams.has("category") &&
-        !searchParams.has("authors")
+        !searchParams.has(PageSearchParams.newsSource) &&
+        !searchParams.has(PageSearchParams.category) &&
+        !searchParams.has(PageSearchParams.authors)
       ) {
         const params = new URLSearchParams(personalizedNewsFeedPreferences);
 
-        params.set("page", "1");
+        params.set(PageSearchParams.page, `${DEFAULT_PAGE}`);
 
         replace(`${pathname}?${params.toString()}`);
       }
     } else {
-      replace("/settings");
+      replace(Paths.settings);
     }
   }, [pathname, personalizedNewsFeedPreferences, replace, searchParams]);
 

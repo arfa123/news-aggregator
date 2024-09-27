@@ -41,3 +41,19 @@ export const enum DateFormats {
 export const enum LocalStorageKeys {
   selectedArticle = "selected-article",
 }
+
+export const enum PageSearchParams {
+  keyword = "keyword",
+  fromDate = "fromDate",
+  toDate = "toDate",
+  newsSource = "newsSource",
+  category = "category",
+  authors = "authors",
+  page = "page",
+}
+
+export const enum Paths {
+  home = "/",
+  feed = "/feed",
+  settings = "/settings",
+}

@@ -9,7 +9,10 @@ import Input from "@/components/ui/Input";
 import { CATEGORIES_OPTIONS, NEWS_SOURCES_OPTIONS } from "@/config/constants";
 import { PersonalizedNewsFeedFormSchema } from "@/lib/schemas";
 import { setPersonalizedFeedPrefrences } from "@/services/feedService";
-import { PersonalizedNewsFeedFormFields } from "@/types/enums";
+import {
+  PageSearchParams,
+  PersonalizedNewsFeedFormFields,
+} from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const PersonalizedNewsFeedForm = ({
@@ -20,9 +23,9 @@ const PersonalizedNewsFeedForm = ({
   const getFormDefaultValues = useCallback(() => {
     const params = new URLSearchParams(personalizedNewsFeedPreferences || "");
 
-    const preferredNewsSources = params.get("newsSource");
-    const preferredCategories = params.get("category");
-    const preferredAuthors = params.get("authors");
+    const preferredNewsSources = params.get(PageSearchParams.newsSource);
+    const preferredCategories = params.get(PageSearchParams.category);
+    const preferredAuthors = params.get(PageSearchParams.authors);
 
     return {
       [PersonalizedNewsFeedFormFields.preferredNewsSources]:
@@ -53,15 +56,15 @@ const PersonalizedNewsFeedForm = ({
         formData[PersonalizedNewsFeedFormFields.preferredAuthors];
 
       if (preferredNewsSources?.length > 0) {
-        params.set("newsSource", preferredNewsSources.join(","));
+        params.set(PageSearchParams.newsSource, preferredNewsSources.join(","));
       }
 
       if (preferredCategories?.length > 0) {
-        params.set("category", preferredCategories.join(","));
+        params.set(PageSearchParams.category, preferredCategories.join(","));
       }
 
       if (preferredAuthors) {
-        params.set("authors", preferredAuthors);
+        params.set(PageSearchParams.authors, preferredAuthors);
       }
 
       setPersonalizedFeedPrefrences(params.toString());
