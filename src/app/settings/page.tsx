@@ -1,7 +1,12 @@
+import { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import PersonalizedNewsFeedForm from "@/components/forms/PersonalizedNewsFeedForm";
 import { CookiesKeys } from "@/types/enums";
+
+export const metadata: Metadata = {
+  title: "Settings",
+};
 
 export default function SettingsPage() {
   const personalizedNewsFeedPreferences = cookies().get(

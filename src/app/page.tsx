@@ -1,8 +1,14 @@
 import { Suspense } from "react";
 
+import { Metadata } from "next";
+
 import SearchArticlesForm from "@/components/forms/SearchArticlesForm";
 import ArticlesSection from "@/components/sections/ArticlesSection";
 import ArticlesSectionSkeletonUI from "@/components/ui/ArticlesSectionSkeletonUI";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default async function HomePage({
   searchParams,

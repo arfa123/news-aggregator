@@ -1,11 +1,16 @@
 import { Suspense } from "react";
 
+import { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import SearchPersonalizedNewsFeedForm from "@/components/forms/SearchPersonalizedNewsFeedForm";
 import PersonalizedArticlesSection from "@/components/sections/PersonalizedArticlesSection";
 import ArticlesSectionSkeletonUI from "@/components/ui/ArticlesSectionSkeletonUI";
 import { CookiesKeys } from "@/types/enums";
+
+export const metadata: Metadata = {
+  title: "News Feed",
+};
 
 export default function FeedPage({
   searchParams,
