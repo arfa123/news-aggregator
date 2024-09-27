@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button";
@@ -20,6 +20,8 @@ const PersonalizedNewsFeedForm = ({
 }: {
   personalizedNewsFeedPreferences?: string;
 }) => {
+  const [isPending, startTransition] = useTransition();
+
   const getFormDefaultValues = useCallback(() => {
     const params = new URLSearchParams(personalizedNewsFeedPreferences || "");
 
@@ -46,28 +48,33 @@ const PersonalizedNewsFeedForm = ({
 
   const onSubmit = handleSubmit(
     (formData) => {
-      const params = new URLSearchParams("");
+      startTransition(() => {
+        const params = new URLSearchParams("");
 
-      const preferredNewsSources =
-        formData[PersonalizedNewsFeedFormFields.preferredNewsSources];
-      const preferredCategories =
-        formData[PersonalizedNewsFeedFormFields.preferredCategories];
-      const preferredAuthors =
-        formData[PersonalizedNewsFeedFormFields.preferredAuthors];
+        const preferredNewsSources =
+          formData[PersonalizedNewsFeedFormFields.preferredNewsSources];
+        const preferredCategories =
+          formData[PersonalizedNewsFeedFormFields.preferredCategories];
+        const preferredAuthors =
+          formData[PersonalizedNewsFeedFormFields.preferredAuthors];
 
-      if (preferredNewsSources?.length > 0) {
-        params.set(PageSearchParams.newsSource, preferredNewsSources.join(","));
-      }
+        if (preferredNewsSources?.length > 0) {
+          params.set(
+            PageSearchParams.newsSource,
+            preferredNewsSources.join(",")
+          );
+        }
 
-      if (preferredCategories?.length > 0) {
-        params.set(PageSearchParams.category, preferredCategories.join(","));
-      }
+        if (preferredCategories?.length > 0) {
+          params.set(PageSearchParams.category, preferredCategories.join(","));
+        }
 
-      if (preferredAuthors) {
-        params.set(PageSearchParams.authors, preferredAuthors);
-      }
+        if (preferredAuthors) {
+          params.set(PageSearchParams.authors, preferredAuthors);
+        }
 
-      setPersonalizedFeedPrefrences(params.toString());
+        setPersonalizedFeedPrefrences(params.toString());
+      });
     },
     (error) => console.error(error)
   );
@@ -120,7 +127,9 @@ const PersonalizedNewsFeedForm = ({
           </div>
         </div>
 
-        <Button type="submit">Save Preferences</Button>
+        <Button type="submit" loading={isPending}>
+          Save Preferences
+        </Button>
       </form>
     </FormProvider>
   );
