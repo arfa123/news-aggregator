@@ -14,7 +14,7 @@ export default function ArticlePage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!selectedArticle) {
+    if (selectedArticle === null) {
       router.push(Paths.home);
     }
   }, [selectedArticle, router]);
