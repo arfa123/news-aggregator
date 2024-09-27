@@ -86,7 +86,6 @@ const PersonalizedNewsFeedForm = ({
         className="rounded-lg bg-white p-6 shadow-md md:p-8"
       >
         <div className="mb-8">
-          <h3 className="mb-4 text-xl font-semibold">Preferred Sources</h3>
           <div className="relative">
             <Dropdown
               {...register(PersonalizedNewsFeedFormFields.preferredNewsSources)}
@@ -101,7 +100,6 @@ const PersonalizedNewsFeedForm = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="mb-4 text-xl font-semibold">Preferred Categories</h3>
           <div className="relative">
             <Dropdown
               {...register(PersonalizedNewsFeedFormFields.preferredCategories)}
@@ -116,7 +114,6 @@ const PersonalizedNewsFeedForm = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="mb-4 text-xl font-semibold">Preferred Authors</h3>
           <div className="grid grid-cols-1 gap-4">
             <Input
               {...register(PersonalizedNewsFeedFormFields.preferredAuthors)}
