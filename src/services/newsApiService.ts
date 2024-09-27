@@ -75,7 +75,7 @@ export const getNewsApiArticles = async ({
             source: source.name,
             url,
             date: publishedAt,
-            category: "",
+            category: source.id,
             content,
             author,
           })

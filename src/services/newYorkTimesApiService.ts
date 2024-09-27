@@ -1,7 +1,5 @@
 "use server";
 
-import { randomUUID } from "crypto";
-
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
 import { getErrorMessage } from "@/lib/utils";
@@ -64,6 +62,7 @@ export const getNewYorkTimesApiArticles = async ({
       data:
         response?.data?.response?.docs.map(
           ({
+            _id,
             web_url,
             headline,
             abstract,
@@ -73,16 +72,17 @@ export const getNewYorkTimesApiArticles = async ({
             section_name,
             snippet,
             byline,
+            lead_paragraph,
           }) => ({
-            id: randomUUID(),
+            id: _id,
             title: headline.main,
-            description: abstract,
+            description: snippet || abstract,
             imageUrl: `${NEW_YORK_TIMES_IMAGES_BASE_URL}${multimedia?.[0]?.url}`,
             source,
             url: web_url,
             date: pub_date,
             category: section_name,
-            content: snippet,
+            content: createArticleContent({ abstract, lead_paragraph }),
             author: byline.original,
           })
         ) || [],
@@ -95,3 +95,19 @@ export const getNewYorkTimesApiArticles = async ({
     };
   }
 };
+
+function createArticleContent({
+  abstract = "",
+  lead_paragraph,
+}: {
+  abstract: string;
+  lead_paragraph: string;
+}): string {
+  const leadParagraph = lead_paragraph || "";
+
+  if (abstract === leadParagraph) {
+    return abstract;
+  } else {
+    return `${abstract}\n\n${leadParagraph}`.trim();
+  }
+}
