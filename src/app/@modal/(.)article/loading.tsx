@@ -2,10 +2,7 @@ import ArticleDetailsSkeletonUI from "@/components/ui/ArticleDetailsSkeletonUI";
 
 export default function ArticleModalLoader() {
   return (
-    <dialog
-      open
-      className="fixed inset-0 z-50 m-0 max-h-full max-w-full overflow-hidden p-0"
-    >
+    <dialog open>
       <div
         className="fixed inset-0 bg-black/75 backdrop-blur-sm"
         aria-hidden="true"
