@@ -1,10 +1,9 @@
 import axios from "axios";
 
-import { ApiError } from "@/types/api";
+import { CONTENT_TYPE_APPLICATION_JSON } from "@/config/constants";
 
 const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
 const GUARDIAN_API_BASE_URL = process.env.GUARDIAN_API_BASE_URL;
-const CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
 const guardianApiClient = axios.create({
   baseURL: GUARDIAN_API_BASE_URL,

@@ -7,7 +7,6 @@ import { shuffleArray } from "@/lib/utils";
 import { getGuardianApiArticles } from "@/services/guardianApiService";
 import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
 import { getNewsApiArticles } from "@/services/newsApiService";
-import { ArticleAPIResponse } from "@/types";
 import { CookiesKeys, NewsSources } from "@/types/enums";
 
 export const setPersonalizedFeedPrefrences = async (

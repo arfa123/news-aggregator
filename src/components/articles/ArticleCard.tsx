@@ -2,7 +2,6 @@ import Image from "next/image";
 
 import ArticleDetails from "@/components/articles/ArticleDetails";
 import ReadMoreLink from "@/components/ui/ReadMoreLink";
-import { Article } from "@/types";
 
 const ArticleCard = (article: Article) => {
   const { imageUrl, title } = article;

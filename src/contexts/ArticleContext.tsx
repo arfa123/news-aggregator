@@ -2,7 +2,6 @@
 
 import { createContext, useEffect, useState } from "react";
 
-import { Article } from "@/types";
 import { LocalStorageKeys } from "@/types/enums";
 
 interface ArticleContextType {
