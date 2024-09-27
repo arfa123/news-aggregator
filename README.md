@@ -78,11 +78,10 @@ After using either method, the application will be available at `http://localhos
 ```plaintext
 src/
 ├── app/
-│   ├── (auth)/
-│   ├── (dashboard)/
 │   ├── @modal/
-│   ├── api/
 │   ├── article/
+│   ├── feed/
+│   ├── settings/
 │   ├── favicon.ico
 │   ├── globals.css
 │   ├── layout.tsx
@@ -90,7 +89,6 @@ src/
 │   └── page.tsx
 ├── components/
 │   ├── articles/
-│   ├── buttons/
 │   ├── forms/
 │   ├── layout/
 │   ├── sections/
@@ -112,10 +110,9 @@ src/
 │   ├── newYorkTimesApiService.ts
 │   └── newsApiService.ts
 └── types/
-    ├── api.ts
-    ├── article.ts
+    ├── api.d.ts
+    ├── articles.d.ts
     ├── enums.ts
-    ├── guardianApi.d.ts
-    ├── newYorkTimesApi.d.ts
-    └── newsApi.d.ts
+    ├── errors.d.ts
+    └── personalization.d.ts
 ```

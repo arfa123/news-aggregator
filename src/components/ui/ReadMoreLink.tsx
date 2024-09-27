@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 import useArticle from "@/hooks/useArticle";
-import { Article } from "@/types";
 
 const ReadMoreLink = ({ article }: { article: Article }) => {
   const { setSelectedArticle } = useArticle();
