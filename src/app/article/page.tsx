@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import ArticleDetails from "@/components/articles/ArticleDetails";
 import useArticle from "@/hooks/useArticle";
+import { Paths } from "@/types/enums";
 
 export default function ArticlePage() {
   const { selectedArticle } = useArticle();
@@ -14,7 +15,7 @@ export default function ArticlePage() {
 
   useEffect(() => {
     if (!selectedArticle) {
-      router.push("/");
+      router.push(Paths.home);
     }
   }, [selectedArticle, router]);
 
@@ -24,7 +25,7 @@ export default function ArticlePage() {
     <div className="mx-auto max-w-4xl p-6">
       <ArticleDetails article={selectedArticle} showFullContent={true} />
       <div className="mt-6 flex items-center justify-between">
-        <Link href="/" className="text-blue-500 hover:underline">
+        <Link href={Paths.home} className="text-blue-500 hover:underline">
           ← Back to Home
         </Link>
         <a

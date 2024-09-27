@@ -4,16 +4,17 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { generatePaginationArray } from "@/lib/utils";
+import { PageSearchParams } from "@/types/enums";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 const Pagination = ({ totalPages }: { totalPages: number }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentPage = Number(searchParams.get(PageSearchParams.page)) || 1;
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
-    params.set("page", pageNumber.toString());
+    params.set(PageSearchParams.page, pageNumber.toString());
     return `${pathname}?${params.toString()}`;
   };
 

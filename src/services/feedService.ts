@@ -7,7 +7,7 @@ import { shuffleArray } from "@/lib/utils";
 import { getGuardianApiArticles } from "@/services/guardianApiService";
 import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
 import { getNewsApiArticles } from "@/services/newsApiService";
-import { CookiesKeys, NewsSources } from "@/types/enums";
+import { CookiesKeys, NewsSources, Paths } from "@/types/enums";
 
 export const setPersonalizedFeedPrefrences = async (
   personalizedNewsFeed: string
@@ -15,9 +15,9 @@ export const setPersonalizedFeedPrefrences = async (
   cookies().set(
     CookiesKeys.personalizedNewsFeedPreferences,
     personalizedNewsFeed,
-    { httpOnly: true, path: "/" }
+    { httpOnly: true, path: Paths.home }
   );
-  redirect("/feed");
+  redirect(Paths.feed);
 };
 
 const getGuardianArticlesForCategories = async ({

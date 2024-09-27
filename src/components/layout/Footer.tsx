@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { Paths } from "@/types/enums";
+
 const Footer = () => {
   return (
     <footer className="bg-gray-800 py-8 text-white">
@@ -14,22 +16,22 @@ const Footer = () => {
           <nav>
             <ul className="flex flex-wrap justify-center space-x-4 md:justify-end">
               <li>
-                <Link href="/" className="hover:text-gray-300">
+                <Link href={Paths.home} className="hover:text-gray-300">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/" className="hover:text-gray-300">
+                <Link href={Paths.home} className="hover:text-gray-300">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link href="/" className="hover:text-gray-300">
+                <Link href={Paths.home} className="hover:text-gray-300">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/" className="hover:text-gray-300">
+                <Link href={Paths.home} className="hover:text-gray-300">
                   Terms of Service
                 </Link>
               </li>

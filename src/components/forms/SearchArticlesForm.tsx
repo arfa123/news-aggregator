@@ -7,9 +7,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
-import { CATEGORIES, NEWS_SOURCES } from "@/config/constants";
+import { CATEGORIES, DEFAULT_PAGE, NEWS_SOURCES } from "@/config/constants";
 import { SearchArticlesFormSchema } from "@/lib/schemas";
-import { SearchArticlesFormFields } from "@/types/enums";
+import { PageSearchParams, SearchArticlesFormFields } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const SearchArticlesForm = () => {
@@ -20,12 +20,16 @@ const SearchArticlesForm = () => {
   const searchArticlesForm = useForm({
     resolver: zodResolver(SearchArticlesFormSchema),
     defaultValues: {
-      [SearchArticlesFormFields.keyword]: searchParams.get("keyword") || "",
-      [SearchArticlesFormFields.fromDate]: searchParams.get("fromDate") || "",
-      [SearchArticlesFormFields.toDate]: searchParams.get("toDate") || "",
+      [SearchArticlesFormFields.keyword]:
+        searchParams.get(PageSearchParams.keyword) || "",
+      [SearchArticlesFormFields.fromDate]:
+        searchParams.get(PageSearchParams.fromDate) || "",
+      [SearchArticlesFormFields.toDate]:
+        searchParams.get(PageSearchParams.toDate) || "",
       [SearchArticlesFormFields.newsSource]:
-        searchParams.get("newsSource") || "",
-      [SearchArticlesFormFields.category]: searchParams.get("category") || "",
+        searchParams.get(PageSearchParams.newsSource) || "",
+      [SearchArticlesFormFields.category]:
+        searchParams.get(PageSearchParams.category) || "",
     },
   });
 
@@ -41,26 +45,26 @@ const SearchArticlesForm = () => {
     const category = formData[SearchArticlesFormFields.category];
 
     if (keyword) {
-      params.set("keyword", keyword);
-    } else params.delete("keyword");
+      params.set(PageSearchParams.keyword, keyword);
+    } else params.delete(PageSearchParams.keyword);
 
     if (fromDate) {
-      params.set("fromDate", fromDate);
-    } else params.delete("fromDate");
+      params.set(PageSearchParams.fromDate, fromDate);
+    } else params.delete(PageSearchParams.fromDate);
 
     if (toDate) {
-      params.set("toDate", toDate);
-    } else params.delete("toDate");
+      params.set(PageSearchParams.toDate, toDate);
+    } else params.delete(PageSearchParams.toDate);
 
     if (newsSource) {
-      params.set("newsSource", newsSource);
-    } else params.delete("newsSource");
+      params.set(PageSearchParams.newsSource, newsSource);
+    } else params.delete(PageSearchParams.newsSource);
 
     if (category) {
-      params.set("category", category);
-    } else params.delete("category");
+      params.set(PageSearchParams.category, category);
+    } else params.delete(PageSearchParams.category);
 
-    params.set("page", "1");
+    params.set(PageSearchParams.page, `${DEFAULT_PAGE}`);
 
     replace(`${pathname}?${params.toString()}`);
   });

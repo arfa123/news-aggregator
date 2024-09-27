@@ -1,4 +1,4 @@
-import { Categories, NewsSources } from "@/types/enums";
+import { Categories, NewsSources, Paths } from "@/types/enums";
 
 export const PAGE_SIZE = 10;
 
@@ -8,15 +8,15 @@ export const CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
 export const ROUTES = [
   {
-    path: "/",
+    path: Paths.home,
     label: "Home",
   },
   {
-    path: "/feed",
+    path: Paths.feed,
     label: "My Feed",
   },
   {
-    path: "/settings",
+    path: Paths.settings,
     label: "Settings",
   },
 ];
