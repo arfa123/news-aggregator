@@ -9,9 +9,7 @@ import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
 import { getNewsApiArticles } from "@/services/newsApiService";
 import { CookiesKeys, NewsSources, Paths } from "@/types/enums";
 
-export const setPersonalizedFeedPrefrences = async (
-  personalizedNewsFeed: string
-) => {
+export const setPersonalizedFeedPrefrences = (personalizedNewsFeed: string) => {
   cookies().set(
     CookiesKeys.personalizedNewsFeedPreferences,
     personalizedNewsFeed,
