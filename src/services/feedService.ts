@@ -9,7 +9,25 @@ import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
 import { getNewsApiArticles } from "@/services/newsApiService";
 import { CookiesKeys, NewsSources, Paths } from "@/types/enums";
 
-export const setPersonalizedFeedPrefrences = (personalizedNewsFeed: string) => {
+type FeedParams = {
+  page?: string;
+  newsSources?: string[];
+  categories?: string[];
+  authors?: string[];
+};
+
+const apiServices = {
+  [NewsSources.NewsAPI]: getNewsApiArticles,
+  [NewsSources.Guardian]: (params: FeedParams) =>
+    params.categories && params.categories.length > 0
+      ? getGuardianArticlesForCategories(params)
+      : getGuardianApiArticles(params),
+  [NewsSources.NewYorkTimes]: getNewYorkTimesApiArticles,
+};
+
+export const setPersonalizedFeedPreferences = (
+  personalizedNewsFeed: string
+) => {
   cookies().set(
     CookiesKeys.personalizedNewsFeedPreferences,
     personalizedNewsFeed,
@@ -22,118 +40,71 @@ const getGuardianArticlesForCategories = async ({
   categories,
   authors,
   page,
-}: {
-  categories: string[];
-  authors?: string[];
-  page?: string;
-}) => {
+}: Omit<FeedParams, "newsSources">) => {
   const results = await Promise.allSettled(
-    categories.map((category) =>
+    categories!.map((category) =>
       getGuardianApiArticles({
-        category,
+        categories: category,
         authors,
         page,
       })
     )
   );
 
-  // Filter out fulfilled results
   const successfulResults = results
-    .filter((result) => result.status === "fulfilled" && result)
-    .map(
-      (result) => (result as PromiseFulfilledResult<ArticleAPIResponse>).value
-    );
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => result.value);
 
-  // Combine data and totalPages from successful results
   const combinedData = successfulResults.reduce(
-    (acc = { data: [], totalPages: 0 }, result) => {
-      if (result?.data) {
-        acc.data = [...(acc.data || []), ...result.data];
-      }
-      acc.totalPages = Math.max(acc.totalPages || 0, result?.totalPages || 0);
-      return acc;
-    },
-    { data: [], totalPages: 0 }
+    (acc, result) => ({
+      data: [...(acc?.data || []), ...(result?.data || [])],
+      totalPages: Math.max(acc?.totalPages || 0, result?.totalPages || 0),
+    }),
+    { data: [] as Article[], totalPages: 0 }
   );
 
-  // Check if all promises were rejected
   const allFailed = results.every((result) => result.status === "rejected");
   const errors = results
     .filter((result) => result.status === "rejected")
-    .map((result) => (result as PromiseRejectedResult).reason);
+    .map((result) => result.reason);
 
   return {
-    data: combinedData?.data,
-    totalPages: combinedData?.totalPages,
-    error: allFailed ? errors[0] : undefined, // Only set error if all API calls failed
+    ...combinedData,
+    error: allFailed ? errors[0] : undefined,
   };
 };
 
-export const getFeedArticles = async (searchParams: {
-  page?: string;
-  newsSources?: string[];
-  categories?: string[];
-  authors?: string[];
-}) => {
-  const { newsSources, categories, authors, page } = searchParams;
+export const getFeedArticles = async (params: FeedParams) => {
+  const {
+    newsSources = Object.values(NewsSources),
+    categories,
+    authors,
+    page,
+  } = params;
 
-  let newsApiArticles: ArticleAPIResponse;
-  let guardianApiArticles: ArticleAPIResponse;
-  let newYorkTimesApiArticles: ArticleAPIResponse;
+  const results = await Promise.all(
+    newsSources.map(async (source) => {
+      const service = apiServices[source as NewsSources];
+      return service ? await service({ categories, authors, page }) : null;
+    })
+  );
 
-  if (newsSources?.includes(NewsSources.NewsAPI) || !newsSources) {
-    newsApiArticles = await getNewsApiArticles({
-      category: categories,
-      authors,
-      page,
-    });
-  }
+  const articles = shuffleArray(
+    results.flatMap((result) => result?.data || [])
+  );
 
-  if (newsSources?.includes(NewsSources.Guardian) || !newsSources) {
-    guardianApiArticles =
-      categories && categories?.length > 0
-        ? await getGuardianArticlesForCategories({
-            categories,
-            authors,
-            page,
-          })
-        : await getGuardianApiArticles({
-            authors,
-            page,
-          });
-  }
+  const totalPages = Math.max(
+    ...results.map((result) => result?.totalPages || 0),
+    1
+  );
 
-  if (newsSources?.includes(NewsSources.NewYorkTimes) || !newsSources) {
-    newYorkTimesApiArticles = await getNewYorkTimesApiArticles({
-      category: categories,
-      authors,
-      page,
-    });
-  }
-
-  const articles = shuffleArray([
-    ...(newsApiArticles?.data || []),
-    ...(guardianApiArticles?.data || []),
-    ...(newYorkTimesApiArticles?.data || []),
-  ]);
-
-  const totalPages =
-    Math.max(
-      newsApiArticles?.totalPages || 0,
-      guardianApiArticles?.totalPages || 0,
-      newYorkTimesApiArticles?.totalPages || 0
-    ) || 1;
-
-  const errors: string[] = [];
-
-  if (newsApiArticles?.error) errors.push(newsApiArticles.error);
-  if (guardianApiArticles?.error) errors.push(guardianApiArticles.error);
-  if (newYorkTimesApiArticles?.error)
-    errors.push(newYorkTimesApiArticles.error);
+  const errors = results
+    .map((result) => result?.error)
+    .filter((error): error is string => !!error);
 
   return {
     articles,
     totalPages,
-    error: errors.join("\n"),
+    error: errors.length > 0 ? errors.join("\n") : undefined,
   };
 };

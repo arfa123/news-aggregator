@@ -20,16 +20,9 @@ export const getGuardianApiArticles = async ({
   keyword,
   fromDate,
   toDate,
-  category,
+  categories,
   authors,
-}: {
-  page?: string;
-  keyword?: string;
-  fromDate?: string;
-  toDate?: string;
-  category?: string;
-  authors?: string[];
-}) => {
+}: ArticleAPIParams) => {
   let query = keyword;
 
   if (authors) {
@@ -60,10 +53,11 @@ export const getGuardianApiArticles = async ({
         q: query,
         "form-date": fromDate,
         "to-date": toDate,
-        section: category
-          ? CATEGORY_TO_GUARDIAN_API_CATEGORY_MAPPING[category as Categories] ||
-            category
-          : category,
+        section: categories
+          ? CATEGORY_TO_GUARDIAN_API_CATEGORY_MAPPING[
+              categories as Categories
+            ] || categories
+          : categories,
       },
     });
 

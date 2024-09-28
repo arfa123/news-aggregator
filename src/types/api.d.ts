@@ -1,5 +1,14 @@
 /* eslint-disable no-unused-vars */
 declare global {
+  type ArticleAPIParams = {
+    page?: string;
+    keyword?: string;
+    fromDate?: string;
+    toDate?: string;
+    categories?: string[] | string;
+    authors?: string[];
+  };
+
   type NewsAPIArticle = {
     source: { id: string; name: string };
     author: string;

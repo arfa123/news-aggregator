@@ -6,6 +6,27 @@ import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
 import { getNewsApiArticles } from "@/services/newsApiService";
 import { NewsSources } from "@/types/enums";
 
+const apiServices = {
+  [NewsSources.NewsAPI]: getNewsApiArticles,
+  [NewsSources.Guardian]: getGuardianApiArticles,
+  [NewsSources.NewYorkTimes]: getNewYorkTimesApiArticles,
+};
+
+const processApiResult = (result: PromiseSettledResult<ArticleAPIResponse>) => {
+  if (result.status === "fulfilled" && result.value) {
+    return {
+      articles: result.value.data || [],
+      totalPages: result.value.totalPages || 1,
+      error: result.value.error,
+    };
+  }
+  return {
+    articles: [],
+    totalPages: 0,
+    error: result.status === "rejected" ? result.reason : undefined,
+  };
+};
+
 export const getArticles = async (searchParams: {
   page?: string;
   keyword?: string;
@@ -14,118 +35,37 @@ export const getArticles = async (searchParams: {
   newsSource?: string;
   category?: string;
 }) => {
-  const { newsSource } = searchParams;
+  const { newsSource, category, ...otherSearchParams } = searchParams;
 
   if (!newsSource) {
-    const [newsAPIResult, guardianAPIResult, newYorkTimesAPIResult] =
-      await Promise.allSettled([
-        getNewsApiArticles(searchParams),
-        getGuardianApiArticles(searchParams),
-        getNewYorkTimesApiArticles(searchParams),
-      ]);
+    const results = await Promise.allSettled(
+      Object.values(apiServices).map((service) =>
+        service({ categories: category, ...otherSearchParams })
+      )
+    );
 
-    const newsApiArticles =
-      newsAPIResult?.status === "fulfilled" && newsAPIResult?.value
-        ? {
-            data: newsAPIResult.value.data,
-            totalPages: newsAPIResult.value.totalPages,
-            error: newsAPIResult.value.error,
-          }
-        : {
-            data: [],
-            totalPages: 0,
-            error:
-              newsAPIResult.status === "rejected"
-                ? newsAPIResult.reason
-                : undefined,
-          };
-    const guardianApiArticles =
-      guardianAPIResult?.status === "fulfilled" && guardianAPIResult?.value
-        ? {
-            data: guardianAPIResult.value.data,
-            totalPages: guardianAPIResult.value.totalPages,
-            error: guardianAPIResult.value.error,
-          }
-        : {
-            data: [],
-            totalPages: 0,
-            error:
-              guardianAPIResult.status === "rejected"
-                ? guardianAPIResult.reason
-                : undefined,
-          };
-    const newYorkTimesApiArticles =
-      newYorkTimesAPIResult?.status === "fulfilled" &&
-      newYorkTimesAPIResult?.value
-        ? {
-            data: newYorkTimesAPIResult.value.data,
-            totalPages: newYorkTimesAPIResult.value.totalPages,
-            error: newYorkTimesAPIResult.value.error,
-          }
-        : {
-            data: [],
-            totalPages: 0,
-            error:
-              newYorkTimesAPIResult.status === "rejected"
-                ? newYorkTimesAPIResult.reason
-                : undefined,
-          };
+    const processedResults = results.map(processApiResult);
 
-    const articles = shuffleArray([
-      ...(newsApiArticles?.data || []),
-      ...(guardianApiArticles?.data || []),
-      ...(newYorkTimesApiArticles?.data || []),
-    ]);
-
-    const totalPages =
-      Math.max(
-        newsApiArticles?.totalPages || 0,
-        guardianApiArticles?.totalPages || 0,
-        newYorkTimesApiArticles?.totalPages || 0
-      ) || 1;
-
-    const errors: string[] = [];
-
-    if (newsApiArticles.error) errors.push(newsApiArticles.error);
-    if (guardianApiArticles.error) errors.push(guardianApiArticles.error);
-    if (newYorkTimesApiArticles.error)
-      errors.push(newYorkTimesApiArticles.error);
+    const articles = shuffleArray(processedResults.flatMap((r) => r.articles));
+    const totalPages = Math.max(
+      ...processedResults.map((r) => r.totalPages),
+      1
+    );
+    const errors = processedResults.map((r) => r.error).filter(Boolean);
 
     return {
       articles,
       totalPages,
-      error: errors.join("\n"),
+      error: errors.length > 0 ? errors.join("\n") : undefined,
     };
   } else {
-    switch (newsSource) {
-      case NewsSources.NewsAPI:
-      default:
-        const newsApiArticles = await getNewsApiArticles(searchParams);
-
-        return {
-          articles: newsApiArticles?.data || [],
-          totalPages: newsApiArticles?.totalPages || 1,
-          error: newsApiArticles?.error,
-        };
-
-      case NewsSources.Guardian:
-        const guardianApiArticles = await getGuardianApiArticles(searchParams);
-
-        return {
-          articles: guardianApiArticles?.data || [],
-          totalPages: guardianApiArticles?.totalPages || 1,
-          error: guardianApiArticles?.error,
-        };
-
-      case NewsSources.NewYorkTimes:
-        const newYorkTimesApiArticles =
-          await getNewYorkTimesApiArticles(searchParams);
-
-        return {
-          articles: newYorkTimesApiArticles?.data || [],
-          totalPages: newYorkTimesApiArticles?.totalPages || 1,
-          error: newYorkTimesApiArticles?.error,
-        };
-    }
+    const service =
+      apiServices[newsSource as NewsSources] ||
+      apiServices[NewsSources.NewsAPI];
+    const result = await service({
+      categories: category,
+      ...otherSearchParams,
+    });
+    return processApiResult({ status: "fulfilled", value: result });
   }
 };

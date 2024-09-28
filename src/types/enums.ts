@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-export const enum NewsSources {
+export enum NewsSources {
   NewsAPI = "news-api",
   Guardian = "guardian",
   NewYorkTimes = "new-york-times",

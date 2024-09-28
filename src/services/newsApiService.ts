@@ -13,24 +13,17 @@ export const getNewsApiArticles = async ({
   keyword,
   fromDate,
   toDate,
-  category,
+  categories,
   authors,
-}: {
-  page?: string;
-  keyword?: string;
-  fromDate?: string;
-  toDate?: string;
-  category?: string[] | string;
-  authors?: string[];
-}) => {
+}: ArticleAPIParams) => {
   let query = keyword;
 
-  if (category) {
-    const categories = Array.isArray(category)
-      ? category.join(" OR ")
-      : category;
-    if (query) query += ` OR ${categories}`;
-    else query = categories;
+  if (categories) {
+    const categoriesQuery = Array.isArray(categories)
+      ? categories.join(" OR ")
+      : categories;
+    if (query) query += ` OR ${categoriesQuery}`;
+    else query = categoriesQuery;
   }
 
   if (authors) {

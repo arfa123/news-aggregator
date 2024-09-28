@@ -8,7 +8,7 @@ import Dropdown from "@/components/ui/Dropdown";
 import Input from "@/components/ui/Input";
 import { CATEGORIES_OPTIONS, NEWS_SOURCES_OPTIONS } from "@/config/constants";
 import { PersonalizedNewsFeedFormSchema } from "@/lib/schemas";
-import { setPersonalizedFeedPrefrences } from "@/services/feedService";
+import { setPersonalizedFeedPreferences } from "@/services/feedService";
 import {
   PageSearchParams,
   PersonalizedNewsFeedFormFields,
@@ -73,7 +73,7 @@ const PersonalizedNewsFeedForm = ({
           params.set(PageSearchParams.authors, preferredAuthors);
         }
 
-        setPersonalizedFeedPrefrences(params.toString());
+        setPersonalizedFeedPreferences(params.toString());
       });
     },
     (error) => console.error(error)

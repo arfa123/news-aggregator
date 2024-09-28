@@ -17,19 +17,12 @@ export const getNewYorkTimesApiArticles = async ({
   keyword,
   fromDate,
   toDate,
-  category,
+  categories,
   authors,
-}: {
-  page?: string;
-  keyword?: string;
-  fromDate?: string;
-  toDate?: string;
-  category?: string[] | string;
-  authors?: string[];
-}) => {
+}: ArticleAPIParams) => {
   const fq: string[] = [];
 
-  if (category) {
+  if (categories) {
     const fieldMap: {
       [key: string]: string[];
     } = {};
@@ -45,10 +38,10 @@ export const getNewYorkTimesApiArticles = async ({
       fieldMap[mapping.fieldName].push(`"${mapping.value}"`);
     };
 
-    if (Array.isArray(category)) {
-      category.forEach(processCategory);
+    if (Array.isArray(categories)) {
+      categories.forEach(processCategory);
     } else {
-      processCategory(category);
+      processCategory(categories);
     }
 
     const categoryQuerires = Object.entries(fieldMap).map(
