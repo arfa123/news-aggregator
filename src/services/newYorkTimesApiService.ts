@@ -1,8 +1,13 @@
 "use server";
 
-import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
+import {
+  CATEGORY_TO_NEW_YORK_TIMES_API_CATEGORY_MAPPING,
+  DEFAULT_PAGE,
+  PAGE_SIZE,
+} from "@/config/constants";
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
 import { getErrorMessage } from "@/lib/utils";
+import { Categories } from "@/types/enums";
 
 const NEW_YORK_TIMES_IMAGES_BASE_URL =
   process.env.NEW_YORK_TIMES_IMAGES_BASE_URL;
@@ -25,9 +30,32 @@ export const getNewYorkTimesApiArticles = async ({
   const fq: string[] = [];
 
   if (category) {
-    fq.push(
-      `section_name:(${Array.isArray(category) ? category.map((c) => `"${c}"`).join(", ") : category})`
+    const fieldMap: {
+      [key: string]: string[];
+    } = {};
+
+    const processCategory = (c: string) => {
+      const mapping =
+        CATEGORY_TO_NEW_YORK_TIMES_API_CATEGORY_MAPPING[c as Categories];
+      if (!mapping) return;
+
+      if (!fieldMap[mapping.fieldName]) {
+        fieldMap[mapping.fieldName] = [];
+      }
+      fieldMap[mapping.fieldName].push(`"${mapping.value}"`);
+    };
+
+    if (Array.isArray(category)) {
+      category.forEach(processCategory);
+    } else {
+      processCategory(category);
+    }
+
+    const categoryQuerires = Object.entries(fieldMap).map(
+      ([fieldName, values]) => `${fieldName}:(${values.join(", ")})`
     );
+
+    fq.push(...categoryQuerires);
   }
 
   if (authors) {
@@ -77,7 +105,9 @@ export const getNewYorkTimesApiArticles = async ({
             id: _id,
             title: headline.main,
             description: snippet || abstract,
-            imageUrl: `${NEW_YORK_TIMES_IMAGES_BASE_URL}${multimedia?.[0]?.url}`,
+            imageUrl: multimedia?.[0]?.url
+              ? `${NEW_YORK_TIMES_IMAGES_BASE_URL}${multimedia?.[0]?.url}`
+              : "",
             source,
             url: web_url,
             date: pub_date,

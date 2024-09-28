@@ -6,14 +6,24 @@ export const enum NewsSources {
 }
 
 export const enum Categories {
-  Politics = "politics",
-  Technology = "technology",
-  Sports = "sports",
-  News = "news",
-  Science = "science",
-  Fashion = "fashion",
+  Business = "business",
+  Culture = "culture",
+  Education = "education",
   Environment = "environment",
+  Fashion = "fashion",
+  Food = "food",
+  Games = "games",
   Health = "health",
+  Lifestyle = "lifestyle",
+  Movies = "movies",
+  News = "news",
+  Politics = "politics",
+  Science = "science",
+  Sports = "sports",
+  Technology = "technology",
+  Travel = "travel",
+  Weather = "weather",
+  World = "world",
 }
 
 export const enum SearchArticlesFormFields {
@@ -56,4 +66,10 @@ export const enum Paths {
   home = "/",
   feed = "/feed",
   settings = "/settings",
+}
+
+export const enum NewYorkAPIFilterQueryFields {
+  newsDesk = "news_desk",
+  sectionName = "section_name",
+  typeOfMaterial = "type_of_material",
 }

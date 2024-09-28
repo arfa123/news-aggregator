@@ -2,9 +2,14 @@
 
 import { randomUUID } from "crypto";
 
-import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
+import {
+  CATEGORY_TO_GUARDIAN_API_CATEGORY_MAPPING,
+  DEFAULT_PAGE,
+  PAGE_SIZE,
+} from "@/config/constants";
 import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
 import { getErrorMessage } from "@/lib/utils";
+import { Categories } from "@/types/enums";
 
 const GuardianAPIResponseFormat = "json";
 const GuardianAPIShowFields =
@@ -55,7 +60,10 @@ export const getGuardianApiArticles = async ({
         q: query,
         "form-date": fromDate,
         "to-date": toDate,
-        section: category,
+        section: category
+          ? CATEGORY_TO_GUARDIAN_API_CATEGORY_MAPPING[category as Categories] ||
+            category
+          : category,
       },
     });
 
