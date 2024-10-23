@@ -12,18 +12,17 @@ export const metadata: Metadata = {
   title: "Home",
 };
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: {
+export default async function HomePage(props: {
+  searchParams: Promise<{
     page?: string;
     keyword?: string;
     fromDate?: string;
     toDate?: string;
     newsSource?: string;
     category?: string;
-  };
+  }>;
 }) {
+  const searchParams = await props.searchParams;
   const urlSearchParams = new URLSearchParams(
     Object.entries(searchParams)
   ).toString();

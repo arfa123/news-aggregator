@@ -12,21 +12,20 @@ export const metadata: Metadata = {
   title: "News Feed",
 };
 
-export default function FeedPage({
-  searchParams,
-}: {
-  searchParams: {
+export default async function FeedPage(props: {
+  searchParams: Promise<{
     page?: string;
     newsSource?: string;
     category?: string;
     authors?: string;
-  };
+  }>;
 }) {
+  const searchParams = await props.searchParams;
   const urlSearchParams = new URLSearchParams(
     Object.entries(searchParams)
   ).toString();
 
-  const personalizedNewsFeedPreferences = cookies().get(
+  const personalizedNewsFeedPreferences = (await cookies()).get(
     CookiesKeys.personalizedNewsFeedPreferences
   )?.value;
 

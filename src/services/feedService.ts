@@ -25,10 +25,11 @@ const apiServices = {
   [NewsSources.NewYorkTimes]: getNewYorkTimesApiArticles,
 };
 
-export const setPersonalizedFeedPreferences = (
+export const setPersonalizedFeedPreferences = async (
   personalizedNewsFeed: string
 ) => {
-  cookies().set(
+  const cookieStore = await cookies();
+  cookieStore.set(
     CookiesKeys.personalizedNewsFeedPreferences,
     personalizedNewsFeed,
     { httpOnly: true, path: Paths.home }
