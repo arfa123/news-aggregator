@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   title: "Settings",
 };
 
-export default function SettingsPage() {
-  const personalizedNewsFeedPreferences = cookies().get(
+export default async function SettingsPage() {
+  const personalizedNewsFeedPreferences = (await cookies()).get(
     CookiesKeys.personalizedNewsFeedPreferences
   )?.value;
 
