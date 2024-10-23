@@ -16,7 +16,7 @@ const ArticleCard = (article: Article) => {
           height={200}
           placeholder="blur"
           blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-          loading="lazy"
+          priority
         />
       ) : (
         <div className="flex h-48 w-full items-center justify-center bg-gray-200">
