@@ -8,16 +8,17 @@ const ArticleCard = (article: Article) => {
   return (
     <article className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md">
       {imageUrl ? (
-        <Image
-          src={imageUrl}
-          alt={title}
-          className="h-48 w-full object-cover"
-          width={200}
-          height={200}
-          placeholder="blur"
-          blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-          priority
-        />
+        <div className="relative h-48 w-full">
+          <Image
+            fill
+            src={imageUrl}
+            alt={title}
+            className="object-cover"
+            placeholder="blur"
+            blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+            loading="lazy"
+          />
+        </div>
       ) : (
         <div className="flex h-48 w-full items-center justify-center bg-gray-200">
           <span className="text-gray-400">No image available</span>

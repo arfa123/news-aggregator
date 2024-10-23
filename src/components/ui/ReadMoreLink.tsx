@@ -15,6 +15,7 @@ const ReadMoreLink = ({ article }: { article: Article }) => {
     <Link
       href="/article"
       onClick={handleClick}
+      aria-label={article.title}
       className="block bg-gray-100 py-3 text-center text-blue-500 transition duration-300 hover:bg-gray-200"
     >
       Read More
