@@ -3,7 +3,10 @@ import Image from "next/image";
 import ArticleDetails from "@/components/articles/ArticleDetails";
 import ReadMoreLink from "@/components/ui/ReadMoreLink";
 
-const ArticleCard = (article: Article) => {
+const ArticleCard = ({
+  imagePriority = false,
+  ...article
+}: { imagePriority?: boolean } & Article) => {
   const { imageUrl, title } = article;
   return (
     <article className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md">
@@ -16,7 +19,8 @@ const ArticleCard = (article: Article) => {
             className="object-cover"
             placeholder="blur"
             blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-            loading="lazy"
+            loading={imagePriority ? "eager" : "lazy"}
+            priority={imagePriority}
           />
         </div>
       ) : (

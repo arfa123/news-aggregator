@@ -18,8 +18,12 @@ const ArticlesSection = async (searchParams: {
   return (
     <>
       <ArticleCardsContainer>
-        {articles?.map((article) => (
-          <ArticleCard key={article.id} {...article} />
+        {articles?.map((article, index) => (
+          <ArticleCard
+            key={article.id}
+            {...article}
+            imagePriority={index === 0}
+          />
         ))}
       </ArticleCardsContainer>
       {!articles?.length ? (
