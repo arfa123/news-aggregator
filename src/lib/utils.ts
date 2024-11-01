@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const generatePaginationArray = (current: number, total: number) => {
   if (current <= 4) {
     return Array.from({ length: Math.min(5, total) }, (_, i) => i + 1);
@@ -16,6 +18,14 @@ export const shuffleArray = <T>(array: T[]): T[] => {
     [array[i], array[j]] = [array[j], array[i]]; // Swap elements
   }
   return array;
+};
+
+export const sortArticlesByDate = (articles: Article[]): Article[] => {
+  return articles.sort((a, b) => {
+    const dateA = dayjs(a.date);
+    const dateB = dayjs(b.date);
+    return dateB.valueOf() - dateA.valueOf();
+  });
 };
 
 export const capitalize = (word: string) => {
@@ -45,4 +55,26 @@ export function isHTML(str: string): boolean {
   } catch (error) {
     return false;
   }
+}
+
+export function combineURLs(baseURL: string, relativeURL: string) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "")
+    : baseURL;
+}
+
+export function createSearchParams(
+  params: Record<string, string | string[] | undefined>
+): URLSearchParams {
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined) {
+      if (Array.isArray(value)) {
+        value.forEach((v) => searchParams.append(key, v));
+      } else {
+        searchParams.append(key, value);
+      }
+    }
+  });
+  return searchParams;
 }

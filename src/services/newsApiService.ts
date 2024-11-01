@@ -1,5 +1,7 @@
 "use server";
 
+import { unstable_cacheLife as cacheLife } from "next/cache";
+
 import { randomUUID } from "crypto";
 
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
@@ -16,6 +18,9 @@ export const getNewsApiArticles = async ({
   categories,
   authors,
 }: ArticleAPIParams) => {
+  "use cache";
+  cacheLife("minutes");
+
   let query = keyword;
 
   if (categories) {
@@ -50,7 +55,7 @@ export const getNewsApiArticles = async ({
 
     return {
       data:
-        response?.data?.articles.map(
+        response?.articles.map(
           ({
             title,
             description,
@@ -73,7 +78,7 @@ export const getNewsApiArticles = async ({
             author,
           })
         ) || [],
-      totalPages: response.data.totalResults,
+      totalPages: response.totalResults,
     };
   } catch (error) {
     console.error(error);

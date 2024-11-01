@@ -6,8 +6,6 @@ import SearchArticlesForm from "@/components/forms/SearchArticlesForm";
 import ArticlesSection from "@/components/sections/ArticlesSection";
 import ArticlesSectionSkeletonUI from "@/components/ui/ArticlesSectionSkeletonUI";
 
-export const experimental_ppr = true;
-
 export const metadata: Metadata = {
   title: "Home",
 };

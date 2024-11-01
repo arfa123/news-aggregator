@@ -1,5 +1,7 @@
 "use server";
 
+import { unstable_cacheLife as cacheLife } from "next/cache";
+
 import { randomUUID } from "crypto";
 
 import {
@@ -23,6 +25,9 @@ export const getGuardianApiArticles = async ({
   categories,
   authors,
 }: ArticleAPIParams) => {
+  "use cache";
+  cacheLife("minutes");
+
   let query = keyword;
 
   if (authors) {
@@ -63,7 +68,7 @@ export const getGuardianApiArticles = async ({
 
     return {
       data:
-        response.data?.response.results.map(
+        response?.response.results.map(
           ({ fields, webPublicationDate, sectionName }) => ({
             id: randomUUID(),
             title: fields.headline,
@@ -77,7 +82,7 @@ export const getGuardianApiArticles = async ({
             author: fields.byline,
           })
         ) || [],
-      totalPages: response.data.response.pages,
+      totalPages: response.response.pages,
     };
   } catch (error) {
     console.error(error);

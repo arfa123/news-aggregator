@@ -1,5 +1,9 @@
 /* eslint-disable no-unused-vars */
 declare global {
+  interface RequestOptions extends RequestInit {
+    params?: Record<string, string | string[] | undefined>;
+  }
+
   type ArticleAPIParams = {
     page?: string;
     keyword?: string;
