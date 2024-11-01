@@ -1,7 +1,5 @@
 "use server";
 
-import { unstable_cacheLife as cacheLife } from "next/cache";
-
 import {
   CATEGORY_TO_NEW_YORK_TIMES_API_CATEGORY_MAPPING,
   DEFAULT_PAGE,
@@ -22,9 +20,6 @@ export const getNewYorkTimesApiArticles = async ({
   categories,
   authors,
 }: ArticleAPIParams) => {
-  "use cache";
-  cacheLife("minutes");
-
   const fq: string[] = [];
 
   if (categories) {

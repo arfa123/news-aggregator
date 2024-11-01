@@ -1,7 +1,5 @@
 "use server";
 
-import { unstable_cacheLife as cacheLife } from "next/cache";
-
 import { randomUUID } from "crypto";
 
 import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
@@ -18,9 +16,6 @@ export const getNewsApiArticles = async ({
   categories,
   authors,
 }: ArticleAPIParams) => {
-  "use cache";
-  cacheLife("minutes");
-
   let query = keyword;
 
   if (categories) {
