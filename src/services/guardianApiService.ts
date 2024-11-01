@@ -1,7 +1,5 @@
 "use server";
 
-import { unstable_cacheLife as cacheLife } from "next/cache";
-
 import { randomUUID } from "crypto";
 
 import {
@@ -25,9 +23,6 @@ export const getGuardianApiArticles = async ({
   categories,
   authors,
 }: ArticleAPIParams) => {
-  "use cache";
-  cacheLife("minutes");
-
   let query = keyword;
 
   if (authors) {
