@@ -6,8 +6,6 @@ import { ArticleProvider } from "@/contexts/ArticleContext";
 
 import "./globals.css";
 
-export const experimental_ppr = true;
-
 export const metadata: Metadata = {
   title: {
     default: "News Aggregator",

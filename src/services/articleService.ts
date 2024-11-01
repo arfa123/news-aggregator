@@ -1,6 +1,6 @@
 "use server";
 
-import { shuffleArray } from "@/lib/utils";
+import { sortArticlesByDate } from "@/lib/utils";
 import { getGuardianApiArticles } from "@/services/guardianApiService";
 import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
 import { getNewsApiArticles } from "@/services/newsApiService";
@@ -46,7 +46,9 @@ export const getArticles = async (searchParams: {
 
     const processedResults = results.map(processApiResult);
 
-    const articles = shuffleArray(processedResults.flatMap((r) => r.articles));
+    const articles = sortArticlesByDate(
+      processedResults.flatMap((r) => r.articles)
+    );
     const totalPages = Math.max(
       ...processedResults.map((r) => r.totalPages),
       1

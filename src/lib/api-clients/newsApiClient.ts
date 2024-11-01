@@ -1,49 +1,64 @@
-import axios from "axios";
-
 import { CONTENT_TYPE_APPLICATION_JSON } from "@/config/constants";
+import { combineURLs, createSearchParams } from "@/lib/utils";
 import { ApiError } from "@/types/errors";
 
-const NEWS_API_KEY = process.env.NEWS_API_KEY;
-const NEWS_API_BASE_URL = process.env.NEWS_API_BASE_URL;
+const NEWS_API_KEY = process.env.NEWS_API_KEY || "";
+const NEWS_API_BASE_URL = process.env.NEWS_API_BASE_URL || "";
 
-const newsApiClient = axios.create({
-  baseURL: NEWS_API_BASE_URL,
-  headers: {
+async function newsApiFetch(
+  endpoint: string,
+  options: RequestOptions = {}
+): Promise<Response> {
+  const { params = {}, ...fetchOptions } = options;
+
+  const allParams = { ...params, apiKey: NEWS_API_KEY };
+
+  const fullURL = combineURLs(NEWS_API_BASE_URL, endpoint);
+  const url = new URL(fullURL);
+
+  const searchParams = createSearchParams(allParams);
+  url.search = searchParams.toString();
+
+  const defaultHeaders = {
     "Content-Type": CONTENT_TYPE_APPLICATION_JSON,
-  },
-});
+  };
 
-newsApiClient.interceptors.request.use(
-  (config) => {
-    config.params = config.params || {};
-    config.params["apiKey"] = NEWS_API_KEY;
+  const mergedOptions: RequestInit = {
+    ...fetchOptions,
+    headers: {
+      ...defaultHeaders,
+      ...fetchOptions.headers,
+    },
+  };
 
-    return config;
-  },
-  (error) => {
-    if (error.response) {
-      const data = error.response.data;
-      return Promise.reject(new ApiError(data.error || data.errors || data));
-    } else if (error.message) {
-      return Promise.reject(Error(error.message));
+  try {
+    const response = await fetch(url.toString(), mergedOptions);
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new ApiError(data.error || data.errors || data);
+    }
+
+    return response;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    } else if (error instanceof Error) {
+      throw new Error(error.message);
     } else {
-      return Promise.reject(Error(error));
+      throw new Error(String(error));
     }
   }
-);
+}
 
-newsApiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      const data = error.response.data;
-      return Promise.reject(new ApiError(data.error || data.errors || data));
-    } else if (error.message) {
-      return Promise.reject(Error(error.message));
-    } else {
-      return Promise.reject(Error(error));
-    }
-  }
-);
+const newsApiClient = {
+  async get<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+    const response = await newsApiFetch(endpoint, {
+      ...options,
+      method: "GET",
+    });
+    return response.json();
+  },
+};
 
 export { newsApiClient };

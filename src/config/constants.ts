@@ -5,9 +5,9 @@ import {
   Paths,
 } from "@/types/enums";
 
-export const PAGE_SIZE = 10;
+export const PAGE_SIZE = "10";
 
-export const DEFAULT_PAGE = 1;
+export const DEFAULT_PAGE = "1";
 
 export const CONTENT_TYPE_APPLICATION_JSON = "application/json";
 

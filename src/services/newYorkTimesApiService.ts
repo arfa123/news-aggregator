@@ -1,5 +1,7 @@
 "use server";
 
+import { unstable_cacheLife as cacheLife } from "next/cache";
+
 import {
   CATEGORY_TO_NEW_YORK_TIMES_API_CATEGORY_MAPPING,
   DEFAULT_PAGE,
@@ -20,6 +22,9 @@ export const getNewYorkTimesApiArticles = async ({
   categories,
   authors,
 }: ArticleAPIParams) => {
+  "use cache";
+  cacheLife("minutes");
+
   const fq: string[] = [];
 
   if (categories) {
@@ -71,7 +76,7 @@ export const getNewYorkTimesApiArticles = async ({
       };
     }>("/articlesearch.json", {
       params: {
-        page: Number(page) - 1 || DEFAULT_PAGE - 1,
+        page: `${Number(page) - 1 || +DEFAULT_PAGE - 1}`,
         q: keyword,
         begin_date: fromDate?.replaceAll("-", ""),
         end_date: toDate?.replaceAll("-", ""),
@@ -81,7 +86,7 @@ export const getNewYorkTimesApiArticles = async ({
 
     return {
       data:
-        response?.data?.response?.docs.map(
+        response?.response?.docs.map(
           ({
             _id,
             web_url,
@@ -109,7 +114,7 @@ export const getNewYorkTimesApiArticles = async ({
             author: byline.original,
           })
         ) || [],
-      totalPages: Math.ceil(response.data.response.meta.hits / PAGE_SIZE),
+      totalPages: Math.ceil(response.response.meta.hits / +PAGE_SIZE),
     };
   } catch (error) {
     console.error(error);
