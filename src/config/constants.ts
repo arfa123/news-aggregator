@@ -11,6 +11,8 @@ export const DEFAULT_PAGE = "1";
 
 export const CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
+export const FETCH_REVALIDATE_INTERVAL = 60;
+
 export const ROUTES = [
   {
     path: Paths.home,

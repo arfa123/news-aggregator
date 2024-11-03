@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import "server-only";
+
 import { shuffleArray } from "@/lib/utils";
 import { getGuardianApiArticles } from "@/services/guardianApiService";
 import { getNewYorkTimesApiArticles } from "@/services/newYorkTimesApiService";
