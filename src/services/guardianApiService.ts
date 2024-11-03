@@ -1,10 +1,12 @@
 "use server";
 
 import { randomUUID } from "crypto";
+import "server-only";
 
 import {
   CATEGORY_TO_GUARDIAN_API_CATEGORY_MAPPING,
   DEFAULT_PAGE,
+  FETCH_REVALIDATE_INTERVAL,
   PAGE_SIZE,
 } from "@/config/constants";
 import { guardianApiClient } from "@/lib/api-clients/guardianApiClient";
@@ -45,6 +47,7 @@ export const getGuardianApiArticles = async ({
         results: GuardianAPIArticle[];
       };
     }>("/search", {
+      next: { revalidate: FETCH_REVALIDATE_INTERVAL },
       params: {
         page: page || DEFAULT_PAGE,
         "page-size": PAGE_SIZE,

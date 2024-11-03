@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 import { sortArticlesByDate } from "@/lib/utils";
 import { getGuardianApiArticles } from "@/services/guardianApiService";

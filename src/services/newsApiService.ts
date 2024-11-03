@@ -1,8 +1,13 @@
 "use server";
 
 import { randomUUID } from "crypto";
+import "server-only";
 
-import { DEFAULT_PAGE, PAGE_SIZE } from "@/config/constants";
+import {
+  DEFAULT_PAGE,
+  FETCH_REVALIDATE_INTERVAL,
+  PAGE_SIZE,
+} from "@/config/constants";
 import { newsApiClient } from "@/lib/api-clients/newsApiClient";
 import { getErrorMessage } from "@/lib/utils";
 
@@ -38,6 +43,7 @@ export const getNewsApiArticles = async ({
       totalResults: number;
       articles: NewsAPIArticle[];
     }>("/everything", {
+      next: { revalidate: FETCH_REVALIDATE_INTERVAL },
       params: {
         page: page || DEFAULT_PAGE,
         sources: NewsAPISources,

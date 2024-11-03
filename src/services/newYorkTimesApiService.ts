@@ -1,8 +1,9 @@
-"use server";
+import "server-only";
 
 import {
   CATEGORY_TO_NEW_YORK_TIMES_API_CATEGORY_MAPPING,
   DEFAULT_PAGE,
+  FETCH_REVALIDATE_INTERVAL,
   PAGE_SIZE,
 } from "@/config/constants";
 import { newYorkTimesApiClient } from "@/lib/api-clients/newYorkTimesApiClient";
@@ -70,6 +71,7 @@ export const getNewYorkTimesApiArticles = async ({
         };
       };
     }>("/articlesearch.json", {
+      next: { revalidate: FETCH_REVALIDATE_INTERVAL },
       params: {
         page: `${Number(page) - 1 || +DEFAULT_PAGE - 1}`,
         q: keyword,
