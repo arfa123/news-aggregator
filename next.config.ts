@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: process.env.DOCKERIZE ? "standalone" : undefined,
   experimental: {
     ppr: true,
   },
