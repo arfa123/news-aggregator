@@ -7,7 +7,6 @@ import { ArticleProvider } from "@/contexts/ArticleContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  applicationName: "News Aggregator",
   title: {
     default: "News Aggregator",
     template: "%s | News Aggregator",

@@ -39,7 +39,3 @@ yarn-error.log*
 next-env.d.ts
 
 certificates
-
-# Serwist
-public/sw*
-public/swe-worker*
