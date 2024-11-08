@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import PwaInitializer from "@/components/pwa/PwaInitializer";
 import { ArticleProvider } from "@/contexts/ArticleContext";
 
 import "./globals.css";
@@ -18,12 +19,12 @@ export const metadata: Metadata = {
       { url: "/assets/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/assets/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       {
-        url: "/assets/android-chrome-192x192.png",
+        url: "/assets/pwa-manifest-192x192.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        url: "/assets/android-chrome-512x512.png",
+        url: "/assets/pwa-manifest-512x512.png",
         sizes: "512x512",
         type: "image/png",
       },
@@ -62,6 +63,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-gray-100 [&:has(dialog[open])]:overflow-hidden">
+        <PwaInitializer />
         <ArticleProvider>
           <Header />
           {children}
