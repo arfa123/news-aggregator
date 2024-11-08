@@ -21,7 +21,6 @@
     "react-dom": "19.0.0-rc-603e6108-20241029",
     "react-hook-form": "^7.53.0",
     "server-only": "^0.0.1",
-    "web-push": "^3.6.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -29,7 +28,6 @@
     "@types/node": "^20",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
-    "@types/web-push": "^3.6.4",
     "encyrpt-decrypt-env": "^1.0.10",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3-canary.3",
